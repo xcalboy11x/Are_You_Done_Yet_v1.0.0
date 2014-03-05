@@ -1,0 +1,6 @@
+.classpath
+bin/classes/com/techbearcave/notetaker/MainActivity.class
+bin/classes/com/techbearcave/notetaker/MainActivity$1.class
+project.properties
+bin/jarlist.cache
+gen/com/techbearcave/notetaker/BuildConfig.java

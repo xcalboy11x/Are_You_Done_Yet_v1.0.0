@@ -1,0 +1,10 @@
+.classpath
+bin/classes/com/techbearcave/notetaker/MainActivity.class
+bin/classes/com/techbearcave/notetaker/MainActivity$1.class
+project.properties
+bin/jarlist.cache
+gen/com/techbearcave/notetaker/BuildConfig.java
+bin/classes.dex
+bin/jarlist.cache
+bin/resources.ap_
+bin/dexedLibs/android-support-v4-2eeb82de24fbb2c81dc0c6f9d4bd28fc.jar

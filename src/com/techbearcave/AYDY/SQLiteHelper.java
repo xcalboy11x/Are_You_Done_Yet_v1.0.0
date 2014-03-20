@@ -2,6 +2,7 @@ package com.techbearcave.AYDY;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -18,21 +19,24 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     private static final String KEY_CREATED_AT = "Created_at";
     
     // Column names
-    private static final String USER_ID = "UserId";
-    private static final String TASK_ID = "TaskId";
-    private static final String NOTE_ID = "NoteId";
+    private static final String USER_ID = "_id";
+    private static final String TASK_ID = "_id";
+    private static final String NOTE_ID = "_id";
     private static final String FOREIGN_KEY = "Userfk";
     private static final String TASK = "Task";
-    private static final String DESCRIPTION = "Description";
+    private static final String TASK_NAME = "Taskname";
+    private static final String NOTE_NAME = "Notename";
+    private static final String NOTE_DESCRIPTION = "Notedescription";
     
     // Note table create statement
     private static final String CREATE_TABLE_USER = "CREATE TABLE "
             + TABLE_USER + "(" + USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
-    		+ "Fname TEXT, Lname TEXT, Password TEXT, Email TEXT" + ");";
+    		+ "Username TEXT, Fname TEXT, Lname TEXT, Password TEXT, Email TEXT" + ");";
  
     // Tag table create statement
     private static final String CREATE_TABLE_TASKS = "CREATE TABLE " + TABLE_TASK
             + "(" + TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
+            + TASK_NAME + " TEXT, "
     		+ TASK + " TEXT, " 
     		+ KEY_CREATED_AT + " DATETIME," 
             + FOREIGN_KEY + " integer, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
@@ -41,7 +45,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     // todo_tag table create statement
     private static final String CREATE_TABLE_NOTE = "CREATE TABLE " + TABLE_NOTE 
     		+ "(" + NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
-    		+ DESCRIPTION + " TEXT, "
+    		+ NOTE_NAME + " TEXT, "
+    		+ NOTE_DESCRIPTION + " TEXT, "
             + KEY_CREATED_AT + " DATETIME," 
     		+ FOREIGN_KEY + " integer, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
     		+ TABLE_USER + "(" + USER_ID + "));";
@@ -69,9 +74,10 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         onCreate(db);
     }
 	
-	public void insertUser(String firstName, String lastName, String password, String email) {
+	public void insertUser(String userName, String firstName, String lastName, String password, String email) {
 		ContentValues cv = new ContentValues();
 		
+		cv.put("User", userName);
 		cv.put("Fname", firstName);
 		cv.put("Lname", lastName);
 		cv.put("Password", password);
@@ -80,9 +86,10 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		getWritableDatabase().insert("users", "Fname", cv);
 	}
 	
-	public void insertTask(String task, String date, String userId) {
+	public void insertTask(String taskName, String task, String date, String userId) {
 		ContentValues cv = new ContentValues();
 		
+		cv.put("Taskname", taskName);
 		cv.put("Task", task);
 		cv.put("Created_at", date);
 		cv.put("Userfk", userId);
@@ -90,13 +97,22 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		getWritableDatabase().insert("tasks", "Task", cv);
 	}
 	
-	public void insertNote(String description, String date, String userId) {
+	public void insertNote(String noteName, String noteDescription, String date, String userId) {
 		ContentValues cv = new ContentValues();
 		
-		cv.put("Description", description);
+		cv.put("Notename", noteName);
+		cv.put("Description", noteDescription);
 		cv.put("Created_at", date);
 		cv.put("Userfk", userId);
 
 		getWritableDatabase().insert("notes", "note", cv);
+	}
+	
+	public Cursor getNotes () {
+		return (getReadableDatabase().rawQuery("SELECT _id, Notename, Notedescription, Created_at, Userfk,  FROM notes ORDER BY name", null));
+	}
+	
+	public Cursor getTasks () {
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Userfk,  FROM notes ORDER BY name", null));
 	}
 }

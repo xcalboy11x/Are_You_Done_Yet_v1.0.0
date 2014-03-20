@@ -20,5 +20,14 @@
     <string name="title_activity_list_tasks">ListTasksActivity</string>
     <string name="title_menu">Main Menu</string>
     <string name="noteButton">Notes</string>
+    <string name="taskButton">Tasks</string>
+    <string name="timerButton">Timer</string>
+    <string name="helpButton">Help</string>
+    <string name="title_login">Login</string>
+    <string name="usernameField"></string>
+    <string name="passwordField"></string>
+    <string name="usernameText">Username</string>
+    <string name="passwordText">Password</string>
+    <string name="loginButton">Login</string>
 
 </resources>

@@ -17,9 +17,10 @@ public class NavigationMenu extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_navigation_menu);
 		
-		final Button notesButton = (Button)findViewById(R.id.noteButton);
+		final Button noteButton = (Button)findViewById(R.id.noteButton);
+		final Button taskButton = (Button)findViewById(R.id.taskButton);
 		
-		notesButton.setOnClickListener(new OnClickListener() {
+		noteButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -29,7 +30,21 @@ public class NavigationMenu extends Activity {
 				
 			}
 		});
+		
+		taskButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				Intent launchNotes = new Intent(NavigationMenu.this, ListTasksActivity.class);
+				startActivityForResult(launchNotes, 1);
+				
+			}
+		});
+
 	}
+	
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

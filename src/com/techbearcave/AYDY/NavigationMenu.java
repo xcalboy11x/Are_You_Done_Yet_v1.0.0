@@ -19,6 +19,7 @@ public class NavigationMenu extends Activity {
 		
 		final Button noteButton = (Button)findViewById(R.id.noteButton);
 		final Button taskButton = (Button)findViewById(R.id.taskButton);
+		final Button helpButton = (Button)findViewById(R.id.helpButton);
 		
 		noteButton.setOnClickListener(new OnClickListener() {
 			
@@ -42,6 +43,22 @@ public class NavigationMenu extends Activity {
 			}
 		});
 
+	
+		helpButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				//Intent launchHelp = new Intent(NavigationMenu.this, activity_help_menu.xml);
+				
+			}
+		});
+	
+	
+	
+	
+	
+	
+	
 	}
 	
 	

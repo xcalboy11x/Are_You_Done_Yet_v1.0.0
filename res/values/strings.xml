@@ -29,5 +29,7 @@
     <string name="usernameText">Username</string>
     <string name="passwordText">Password</string>
     <string name="loginButton">Login</string>
+    <string name="helpMenuField">blah blah blah this is where help instruction goes</string>
+    <string name="title_activity_help_menu">HelpMenu</string>
 
 </resources>

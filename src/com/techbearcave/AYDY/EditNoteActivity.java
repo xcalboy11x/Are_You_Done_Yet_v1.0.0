@@ -44,8 +44,10 @@ public class EditNoteActivity extends Activity {
 		final EditText noteEditText = (EditText)findViewById(R.id.noteEditText);
 		final TextView dateTextView = (TextView)findViewById(R.id.dateTextView);
 		
+		// set extra to serializable to send note data via intent
+		
 		Serializable extra = getIntent().getSerializableExtra("Note");
-		if(extra != null)
+		if(extra != null) // check here to make sure extra actually has data 
 		{
 			Note note = (Note)extra;
 			titleEditText.setText(note.getTitle());
@@ -64,6 +66,7 @@ public class EditNoteActivity extends Activity {
 			isAddingNote = false;
 		}
 		
+		// cancel method to cancel a new note
 		cancelButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -74,9 +77,12 @@ public class EditNoteActivity extends Activity {
 			}
 		});
 		
+		// save method to save a new note
 		
         saveButton.setOnClickListener(new OnClickListener() {
-			
+			// when the save button is clicked we want to check to see if were "editing" the note
+        	// or if it is a brand new note 
+        	
 			@Override
 			public void onClick(View v) {
 				

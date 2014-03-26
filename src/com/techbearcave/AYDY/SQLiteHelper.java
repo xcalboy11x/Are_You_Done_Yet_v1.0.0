@@ -31,7 +31,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     // Note table create statement
     private static final String CREATE_TABLE_USER = "CREATE TABLE "
             + TABLE_USER + "(" + USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
-    		+ "Username TEXT, Fname TEXT, Lname TEXT, Password TEXT, Email TEXT" + ");";
+    		+ "Username TEXT not null unique, Fname TEXT, Lname TEXT, Password TEXT, Email TEXT" + ");";
  
     // Tag table create statement
     private static final String CREATE_TABLE_TASKS = "CREATE TABLE " + TABLE_TASK
@@ -122,8 +122,9 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		getWritableDatabase().insert("notes", "note", cv);
 	}
 	
-	public Cursor getNotes () {
-		return (getReadableDatabase().rawQuery("SELECT _id, Notename, Notedescription, Created_at, Userfk FROM notes ORDER BY Notename", null));
+	public Cursor getNotesById (String id) {
+		return (getReadableDatabase().rawQuery("SELECT _id, Notename, Notedescription, Created_at, Userfk FROM notes ORDER BY Notename " +
+				"WHERE _id ="+ id, null));
 	}
 	
 	public Cursor getNoteById (String id) {
@@ -140,5 +141,9 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	
 	public String getCreatedat (Cursor c) {
 		return (c.getString(3));
+	}
+	
+	public String getUserId (String email) {
+		return (getReadableDatabase().rawQuery("SELECT _id FROM users WHERE email ="+ email, null).toString()); 
 	}
 }

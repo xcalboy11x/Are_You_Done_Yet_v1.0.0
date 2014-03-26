@@ -51,7 +51,7 @@ public class EditNoteActivity extends Activity {
 		dateTextView = (TextView)findViewById(R.id.dateTextView);
 		helper = new SQLiteHelper(this);
 
-		noteId = getIntent().getStringExtra(ListNotesActivity.ID_EXTRA);
+		//noteId = getIntent().getStringExtra(LogInPage.ID_EXTRA);
 		if (noteId != null) {
 			load();
 		}

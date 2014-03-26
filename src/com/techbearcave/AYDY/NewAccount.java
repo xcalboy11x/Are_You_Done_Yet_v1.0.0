@@ -2,6 +2,7 @@ package com.techbearcave.AYDY;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -20,7 +21,6 @@ public class NewAccount extends Activity {
 	private EditText emailAddress;
 	private Button submitButton;
 	private SQLiteHelper helper;
-	public final static String ID_EXTRA = "._ID";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class NewAccount extends Activity {
 				if(checkAccountFields())
 				{
 					helper.insertUser(userName.toString(), firstName.toString(), lastName.toString(), passWord.toString(), emailAddress.toString());
-					Intent navIntent = new Intent(NewAccount.this, NavigationMenu.class);
+					Intent navIntent = new Intent(NewAccount.this, LogInPage.class);
 					startActivity(navIntent);
 				}
 				else

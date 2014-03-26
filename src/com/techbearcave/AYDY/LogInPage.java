@@ -15,6 +15,7 @@ import com.techbearcave.notetaker.R;
 public class LogInPage extends Activity {
 
 	private SQLiteHelper helper;
+	private String EXTRA_ID = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

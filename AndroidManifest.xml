@@ -55,6 +55,10 @@
             android:name="com.techbearcave.AYDY.NewAccount"
             android:label="@string/title_activity_new_account" >
         </activity>
+        <activity
+            android:name="com.techbearcave.AYDY.Eatmyapple"
+            android:label="@string/title_activity_eatmyapple" >
+        </activity>
     </application>
 
 </manifest>

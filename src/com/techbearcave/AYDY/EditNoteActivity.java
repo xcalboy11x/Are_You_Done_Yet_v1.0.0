@@ -1,8 +1,18 @@
 package com.techbearcave.AYDY;
 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+
+
+
+import java.util.Calendar;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -68,6 +78,11 @@ public class EditNoteActivity extends Activity {
 				
 				if(isInEditMode)
 				{
+
+					Intent returnIntent  = new Intent();
+					Note note = new Note(titleEditText.getText().toString(), noteEditText.getText().toString(), 
+							Calendar.getInstance().getTime());
+					returnIntent.putExtra("Note", note);
 					finish();
 				}
 				else
@@ -94,6 +109,9 @@ public class EditNoteActivity extends Activity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {				
+				
+				Intent returnIntent = new Intent();
+				
 				finish();
 			}
 		} );

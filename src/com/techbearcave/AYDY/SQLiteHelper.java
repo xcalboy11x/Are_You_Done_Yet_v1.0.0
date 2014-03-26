@@ -48,8 +48,9 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     		+ NOTE_NAME + " TEXT, "
     		+ NOTE_DESCRIPTION + " TEXT, "
             + KEY_CREATED_AT + " DATETIME," 
-    		+ FOREIGN_KEY + " integer, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
-    		+ TABLE_USER + "(" + USER_ID + "));";
+    	//	+ FOREIGN_KEY + " integer, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
+    	//	+ TABLE_USER + "(" + USER_ID + "));";
+            + "Userfk INTEGER);";
 	
 	public SQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, SCHEMA_VERSION);
@@ -86,6 +87,9 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		getWritableDatabase().insert("users", "Fname", cv);
 	}
 	
+	
+	
+	
 	public void insertTask(String taskName, String task, String date, String userId) {
 		ContentValues cv = new ContentValues();
 		
@@ -97,11 +101,21 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		getWritableDatabase().insert("tasks", "Task", cv);
 	}
 	
+	public Cursor getTasks () {
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Userfk FROM notes ORDER BY name", null));
+	}
+	
+	public Cursor getTaskById (String id) {
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Userfk FROM notes WHERE _id="+ id, null));
+	}
+	
+	
+	
 	public void insertNote(String noteName, String noteDescription, String date, String userId) {
 		ContentValues cv = new ContentValues();
 		
 		cv.put("Notename", noteName);
-		cv.put("Description", noteDescription);
+		cv.put("Notedescription", noteDescription);
 		cv.put("Created_at", date);
 		cv.put("Userfk", userId);
 
@@ -109,10 +123,22 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	}
 	
 	public Cursor getNotes () {
-		return (getReadableDatabase().rawQuery("SELECT _id, Notename, Notedescription, Created_at, Userfk,  FROM notes ORDER BY name", null));
+		return (getReadableDatabase().rawQuery("SELECT _id, Notename, Notedescription, Created_at, Userfk FROM notes ORDER BY Notename", null));
 	}
 	
-	public Cursor getTasks () {
-		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Userfk,  FROM notes ORDER BY name", null));
+	public Cursor getNoteById (String id) {
+		return (getReadableDatabase().rawQuery("SELECT _id, Notename, Notedescription, Created_at, Userfk FROM notes WHERE _id ="+ id, null));
+	}
+	
+	public String getNotename (Cursor c) {
+		return (c.getString(1));
+	}
+	
+	public String getNotedescription (Cursor c) {
+		return (c.getString(2));
+	}
+	
+	public String getCreatedat (Cursor c) {
+		return (c.getString(3));
 	}
 }

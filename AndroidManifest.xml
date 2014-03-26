@@ -50,6 +50,10 @@
             android:name="com.techbearcave.notetaker.HelpMenu"
             android:label="@string/title_activity_help_menu" >
         </activity>
+        <activity
+            android:name="com.techbearcave.AYDY.Eatmyapple"
+            android:label="@string/title_activity_eatmyapple" >
+        </activity>
     </application>
 
 </manifest>

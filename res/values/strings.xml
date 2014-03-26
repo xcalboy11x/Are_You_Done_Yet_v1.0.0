@@ -31,5 +31,6 @@
     <string name="loginButton">Login</string>
     <string name="helpMenuField">blah blah blah this is where help instruction goes</string>
     <string name="title_activity_help_menu">HelpMenu</string>
+    <string name="title_activity_eatmyapple">Eatmyapple</string>
 
 </resources>

@@ -2,37 +2,45 @@ package com.techbearcave.AYDY;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import com.techbearcave.notetaker.R;
-
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.widget.CursorAdapter;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.techbearcave.notetaker.R;
 
 public class ListNotesActivity extends Activity {
+	
+	public final static String ID_EXTRA = "._ID";
+	private ListView notesListView;
+	private int editingNoteId = -1; 
+	private Cursor model;
+	private SQLiteHelper helper;
+	private NoteAdapter adapter;
+
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		
-		
-		
-		notes.remove(info.position);
-		populateList();
+		// remove stuff
 		
 		return true;
 	}
@@ -46,73 +54,37 @@ public class ListNotesActivity extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.context_menu, menu);
 	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		
-		if(resultCode == RESULT_CANCELED)
-		{
-			return;
-		}
-		
-		if(resultCode == EditNoteActivity.RESULT_DELETE)
-		{
-			notes.remove(editingNoteId);
-			editingNoteId = -1;
-			populateList();
-		}
-		
-		Serializable extra = data.getSerializableExtra("Note");
-		if(extra != null)
-		{
-			Note newNote = (Note)extra;
-			if(editingNoteId > -1 )
-			{
-				notes.set(editingNoteId, newNote);
-				editingNoteId = -1;
-			}
-			else
-			{
-			notes.add(newNote);
-			}
-			populateList();
-		}
-	}
-
-	private List<Note> notes =  new ArrayList <Note>();
-	private ListView notesListView;
-	private int editingNoteId = -1; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_notes);
 		notesListView = (ListView)findViewById(R.id.notesListView);
+		helper = new SQLiteHelper(this);
 		
-		notesListView.setOnItemClickListener(new OnItemClickListener() {
+		/*notesListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int itemNumber, long id) {
 				
 				Intent editNoteIntent = new Intent(view.getContext(), EditNoteActivity.class);
-				editNoteIntent.putExtra("Note", notes.get(itemNumber));
-				editingNoteId = itemNumber;
+				editNoteIntent.putExtra(ID_EXTRA, String.valueOf(id));
+				//editingNoteId = itemNumber;
 				startActivityForResult(editNoteIntent,1);
 				
 			}
-		});
+		});*/
 		
 		registerForContextMenu(notesListView);
+
+		helper.insertNote("First note", "I am one", "1-11-14" , "1");
+
+		model = helper.getNotes();
+		startManagingCursor(model);
+		adapter = new NoteAdapter(model);
+		notesListView.setAdapter(adapter);
 		
-		
-		
-		notes.add(new Note("First Note", "Blah blah some notes here  ", new Date()));
-		notes.add(new Note("Second Note", "Blah blah some notes here  ", new Date()));
-		notes.add(new Note("Third Note", "Blah blah some notes here  ", new Date()));
-		notes.add(new Note("Fourth Note", "Blah blah some notes here  ", new Date()));
-		notes.add(new Note("Fifth Note", "Blah blah some notes here  ", new Date()));
-		
-		populateList();
+		notesListView.setOnItemClickListener(onListClick);
 	}
 
 	@Override
@@ -131,20 +103,49 @@ public class ListNotesActivity extends Activity {
 		
 		return true; 
 	}
+	// safsaf
+	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			Intent editNoteIntent = new Intent(view.getContext(), EditNoteActivity.class);
+			editNoteIntent.putExtra(ID_EXTRA, String.valueOf(id));
+			startActivityForResult(editNoteIntent,1);
+		}
+	};
 
-	private void populateList() {
-		
-		List<String> values = new ArrayList<String>();
-		
-		for(Note note : notes)
-		{
-			values.add(note.getTitle());
+	class NoteAdapter extends CursorAdapter {
+		NoteAdapter(Cursor c) {
+			super(ListNotesActivity.this, c);
 		}
 		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1,
-				values);
+		@Override
+		public void bindView(View row, Context ctxt, Cursor c) {
+			NoteHolder holder = (NoteHolder)row.getTag();
+			holder.populateFrom(c, helper);
+		}
 		
-		notesListView.setAdapter(adapter);
+		@Override
+		public View newView(Context ctxt, Cursor c, ViewGroup parent) {
+			LayoutInflater inflater = getLayoutInflater();
+			
+			View row = inflater.inflate(R.layout.row, parent, false);
+			NoteHolder holder = new NoteHolder(row);
+			row.setTag(holder);
+			return (row);
+		}
+	}
+	
+	class NoteHolder {
+		private TextView noteName = null;
+		private View row = null;
+		
+		NoteHolder(View row) {
+			this.row = row;
+			noteName = (TextView)row.findViewById(R.id.notename);
+		}
+		
+		void populateFrom(Cursor c, SQLiteHelper helper) {
+			noteName.setText(helper.getNotename(c));
+		}
 	}
 	
 }

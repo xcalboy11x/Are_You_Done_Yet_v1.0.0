@@ -68,6 +68,16 @@
             android:text="@string/passwordText"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/loginButton"
+            android:layout_alignBottom="@+id/loginButton"
+            android:layout_marginLeft="94dp"
+            android:layout_toRightOf="@+id/loginButton"
+            android:text="@string/registerButton" />
+
     </RelativeLayout>
 
 </RelativeLayout>

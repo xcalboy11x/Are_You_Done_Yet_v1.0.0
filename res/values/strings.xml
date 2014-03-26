@@ -31,5 +31,20 @@
     <string name="loginButton">Login</string>
     <string name="helpMenuField">blah blah blah this is where help instruction goes</string>
     <string name="title_activity_help_menu">HelpMenu</string>
+    <string name="registerButton">Register</string>
+    <string name="registerUsernameText">Enter a username</string>
+    <string name="registerUsernameField"></string>
+    <string name="registerFirstNameText">Enter your first name</string>
+    <string name="registerLastNameText">Enter your last name</string>
+    <string name="registerPasswordText1">Enter password</string>
+    <string name="registerPasswordText2">Confirm password</string>
+    <string name="registerEmailText">Enter your Email Address</string>
+    <string name="registerFirstNameField"></string>
+    <string name="registerLastNameField"></string>
+    <string name="registerPasswordField1"></string>
+    <string name="registerPasswordField2"></string>
+    <string name="registerEmailField"></string>
+    <string name="registerSubmitButton">Submit</string>
+    <string name="title_activity_new_account">NewAccount</string>
 
 </resources>

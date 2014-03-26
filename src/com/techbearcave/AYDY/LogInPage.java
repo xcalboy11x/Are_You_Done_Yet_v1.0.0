@@ -7,24 +7,41 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.techbearcave.notetaker.R;
 
 public class LogInPage extends Activity {
 
+	private SQLiteHelper helper;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_log_in_page);
 		
-		Button loginButton = (Button)findViewById(R.id.loginButton);
-		Button registerButton = (Button)findViewById(R.id.registerButton);
+		helper = new SQLiteHelper(this);
+		final Button loginButton = (Button)findViewById(R.id.loginButton);
+		final Button registerButton = (Button)findViewById(R.id.registerButton);
+		final EditText usernamefield = (EditText)findViewById(R.id.usernameField);
+		final EditText passwordfield = (EditText)findViewById(R.id.passwordField);
+		
+		
 		
 		loginButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				
+				String username	= usernamefield.getText().toString();
+				String password = passwordfield.getText().toString();
+				
+				if(username.length() >0 & password.length() >0)
+				{
+					
+					
+				}
 				
 			}
 		});

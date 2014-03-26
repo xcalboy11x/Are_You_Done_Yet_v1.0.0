@@ -1,6 +1,7 @@
 package com.techbearcave.AYDY;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -19,6 +20,7 @@ public class NewAccount extends Activity {
 	private EditText emailAddress;
 	private Button submitButton;
 	private SQLiteHelper helper;
+	public final static String ID_EXTRA = "._ID";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,15 @@ public class NewAccount extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				helper.insertUser(userName.toString(), firstName.toString(), lastName.toString(), passWord.toString(), emailAddress.toString());
+				if(checkAccountFields())
+				{
+					helper.insertUser(userName.toString(), firstName.toString(), lastName.toString(), passWord.toString(), emailAddress.toString());
+					Intent navIntent = new Intent(NewAccount.this, NavigationMenu.class);
+					startActivity(navIntent);
+				}
+				else
+					System.out.println("Wrong");
+				
 			}
 		});
 	}
@@ -48,6 +58,46 @@ public class NewAccount extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.new_account, menu);
 		return true;
+	}
+	
+	public boolean checkAccountFields() {
+		System.out.println("user: " + userName.getText().toString());
+		System.out.println("first: " + firstName.getText().toString());
+		System.out.println("last: "+ lastName.getText().toString());
+		System.out.println("p1: " + passWord.getText().toString());
+		System.out.println("p2: " + passWordConf.getText().toString());
+		
+		if(userName.getText().toString().equals("")){
+			System.out.println("Blank user");
+			return false;
+		}
+		else if(firstName.getText().toString().equals("")){
+			System.out.println("Blank first");
+			return false;
+		}
+		else if(lastName.getText().toString().equals("")){
+			System.out.println("Blank last");
+			return false;
+		}
+		else if(passWord.getText().toString().equals("")){
+			System.out.println("Blank pass");
+			return false;
+		}
+		else if(passWordConf.getText().toString().equals("")){
+			System.out.println("Blank pass conf");
+			return false;
+		} 
+		else if ((passWord.getText().toString().compareTo(passWordConf.getText().toString())!=0)) {
+			System.out.println("Password doesn't match");
+			return false;
+		}
+		else if (emailAddress.getText().toString().equals("")) {
+			System.out.println("Blank email");
+			return false;
+		}
+		else 
+			return true;
+
 	}
 
 }

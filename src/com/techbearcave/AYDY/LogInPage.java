@@ -41,14 +41,12 @@ public class LogInPage extends Activity {
 				String password = passwordfield.getText().toString();
 				String dbUsername = helper.getUsername(username);
 				String dbPassword = helper.getPassword(password);
-				Log.i("username", username);
+				
 				
 				if(username.length() >0 & password.length() >0)
 				{
 					try 
-					{
-
-						
+					{	
 						if(username.equals(dbUsername) && password.equals(dbPassword))
 						{
 							System.out.println("Username & Password matches");

@@ -149,10 +149,10 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	}
 	
 	public String getUsername (String username){
-		return (getReadableDatabase().rawQuery("SELECT Username FROM users WHERE Username =" + username, null).toString());
+		return (getReadableDatabase().rawQuery("SELECT Username FROM users WHERE Username='"+ username + "'", null).toString());
 	}
 	
 	public String getPassword (String password){
-		return (getReadableDatabase().rawQuery("SELECT Password FROM users WHERE Password =" + password, null).toString());
+		return (getReadableDatabase().rawQuery("SELECT Password FROM users WHERE Username='"+ password + "'", null).toString());
 	}
 }

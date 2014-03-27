@@ -27,6 +27,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     private static final String TASK_NAME = "Taskname";
     private static final String NOTE_NAME = "Notename";
     private static final String NOTE_DESCRIPTION = "Notedescription";
+  
     
     // Note table create statement
     private static final String CREATE_TABLE_USER = "CREATE TABLE "
@@ -145,5 +146,13 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	
 	public String getUserId (String email) {
 		return (getReadableDatabase().rawQuery("SELECT _id FROM users WHERE email ="+ email, null).toString()); 
+	}
+	
+	public String getUsername (String username){
+		return (getReadableDatabase().rawQuery("SELECT Username FROM users WHERE Username =" + username, null).toString());
+	}
+	
+	public String getPassword (String password){
+		return (getReadableDatabase().rawQuery("SELECT Password FROM users WHERE Password =" + password, null).toString());
 	}
 }

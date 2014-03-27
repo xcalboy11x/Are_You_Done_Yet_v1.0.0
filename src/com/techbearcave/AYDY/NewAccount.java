@@ -42,7 +42,9 @@ public class NewAccount extends Activity {
 			public void onClick(View v) {
 				if(checkAccountFields())
 				{
-					helper.insertUser(userName.toString(), firstName.toString(), lastName.toString(), passWord.toString(), emailAddress.toString());
+					// I swear you need to getText + toString it first
+					helper.insertUser(userName.getText().toString(), firstName.getText().toString(), lastName.getText().toString(), 
+							passWord.getText().toString(), emailAddress.getText().toString());
 					Intent navIntent = new Intent(NewAccount.this, LogInPage.class);
 					startActivity(navIntent);
 				}

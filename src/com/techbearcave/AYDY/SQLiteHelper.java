@@ -166,20 +166,13 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		return (getReadableDatabase().rawQuery("SELECT _id FROM users WHERE email ='"+email+"'", null).toString()); 
 	}
 	
-<<<<<<< HEAD
+
 	public Cursor getUsername (String username){
 		return (getReadableDatabase().rawQuery("SELECT Username, Password, _id FROM users WHERE Username='"+username+"'", null));
 	}
 	
 	public String getPassword (String password){
 		return (getReadableDatabase().rawQuery("SELECT Password FROM users WHERE Password ='"+password+"'", null).toString());
-=======
-	public String getUsername (String username){
-		return (getReadableDatabase().rawQuery("SELECT Username FROM users WHERE Username='"+ username + "'", null).toString());
-	}
-	
-	public String getPassword (String password){
-		return (getReadableDatabase().rawQuery("SELECT Password FROM users WHERE Username='"+ password + "'", null).toString());
->>>>>>> b4bd5aa131cf9bcf88cb98d2e76c1d9244357ac2
+
 	}
 }

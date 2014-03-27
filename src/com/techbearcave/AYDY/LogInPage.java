@@ -39,7 +39,6 @@ public class LogInPage extends Activity {
 				
 				String username	= usernamefield.getText().toString();
 				String password = passwordfield.getText().toString();
-<<<<<<< HEAD
 				
 				if(username.length() >0 && password.length() >0){
 					Cursor c = helper.getUsername(username);
@@ -67,23 +66,6 @@ public class LogInPage extends Activity {
 
 							} 
 							while (c.moveToNext());
-=======
-				String dbUsername = helper.getUsername(username);
-				String dbPassword = helper.getPassword(password);
-				
-				
-				if(username.length() >0 & password.length() >0)
-				{
-					try 
-					{	
-						if(username.equals(dbUsername) && password.equals(dbPassword))
-						{
-							System.out.println("Username & Password matches");
-							Toast.makeText(getApplicationContext(), "Successful Login!", Toast.LENGTH_LONG).show();
-							
-							Intent navIntent = new Intent(LogInPage.this, NavigationMenu.class);
-							startActivity(navIntent);
->>>>>>> b4bd5aa131cf9bcf88cb98d2e76c1d9244357ac2
 						}
 						else
 							Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_SHORT).show();

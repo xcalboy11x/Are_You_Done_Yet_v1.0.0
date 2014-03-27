@@ -38,7 +38,7 @@ public class NavigationMenu extends Activity {
 			public void onClick(View v) {
 				
 				Intent launchNotes = new Intent(NavigationMenu.this, ListTasksActivity.class);
-				startActivityForResult(launchNotes, 1);
+				startActivity(launchNotes);
 				
 			}
 		});

@@ -28,7 +28,7 @@ import com.techbearcave.notetaker.R;
 
 public class ListNotesActivity extends Activity {
 	
-	public final static String ID_EXTRA = "._ID";
+	public String usersId = "";
 	private ListView notesListView;
 	private int editingNoteId = -1; 
 	private Cursor model;
@@ -79,7 +79,7 @@ public class ListNotesActivity extends Activity {
 
 		helper.insertNote("First note", "I am one", "1-11-14" , "1");
 
-		model = helper.getNotes();
+		model = helper.getNotesById(usersId);
 		startManagingCursor(model);
 		adapter = new NoteAdapter(model);
 		notesListView.setAdapter(adapter);
@@ -107,7 +107,7 @@ public class ListNotesActivity extends Activity {
 	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			Intent editNoteIntent = new Intent(view.getContext(), EditNoteActivity.class);
-			editNoteIntent.putExtra(ID_EXTRA, String.valueOf(id));
+			//usersId = getIntent().getStringExtra(LogInPage.ID_EXTRA);
 			startActivityForResult(editNoteIntent,1);
 		}
 	};

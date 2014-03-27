@@ -23,13 +23,13 @@ import com.techbearcave.notetaker.R;
 
 public class ListNotesActivity extends Activity {
 	
-	public String usersId = "";
 	private ListView notesListView;
 	private int editingNoteId = -1; 
 	private Cursor model;
 	private SQLiteHelper helper;
 	private NoteAdapter adapter;
 	private String userId;
+	public static String ID_EXTRA = "._ID";
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -87,6 +87,7 @@ public class ListNotesActivity extends Activity {
 
 		
 		Intent editNoteIntent = new Intent(this, EditNoteActivity.class);
+		editNoteIntent.putExtra(ID_EXTRA, userId);
 		startActivityForResult(editNoteIntent, 1);
 		
 		return true; 
@@ -95,7 +96,7 @@ public class ListNotesActivity extends Activity {
 	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			Intent editNoteIntent = new Intent(view.getContext(), EditNoteActivity.class);
-			//usersId = getIntent().getStringExtra(LogInPage.ID_EXTRA);
+			editNoteIntent.putExtra(ID_EXTRA, userId);
 			startActivityForResult(editNoteIntent,1);
 		}
 	};

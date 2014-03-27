@@ -31,7 +31,7 @@ public class EditNoteActivity extends Activity {
 	public static final int RESULT_DELETE = -9000;
 	private boolean isInEditMode = true ; 
 	private boolean isAddingNote = true; 
-	private String noteId;
+	private String userId;
 	private Button saveButton;
 	private Button cancelButton;
 	private EditText titleEditText;
@@ -51,8 +51,9 @@ public class EditNoteActivity extends Activity {
 		dateTextView = (TextView)findViewById(R.id.dateTextView);
 		helper = new SQLiteHelper(this);
 
-		//noteId = getIntent().getStringExtra(LogInPage.ID_EXTRA);
-		if (noteId != null) {
+		userId = getIntent().getStringExtra(ListNotesActivity.ID_EXTRA);
+		System.out.println("EditNoteID: "+ userId);
+		if (isInEditMode) {
 			load();
 		}
 
@@ -78,11 +79,9 @@ public class EditNoteActivity extends Activity {
 				
 				if(isInEditMode)
 				{
-
-					Intent returnIntent  = new Intent();
-					Note note = new Note(titleEditText.getText().toString(), noteEditText.getText().toString(), 
-							Calendar.getInstance().getTime());
-					returnIntent.putExtra("Note", note);
+					helper.insertNote(titleEditText.getText().toString(), noteEditText.getText().toString(), 
+									Calendar.getInstance().getTime().toString(), Integer.parseInt(userId));
+					saveButton.setText("Save");
 					finish();
 				}
 				else
@@ -142,7 +141,7 @@ public class EditNoteActivity extends Activity {
     }
     
     private void load() {
-		Cursor c = helper.getNoteById(noteId);
+		Cursor c = helper.getNoteById(userId);
 		
 		c.moveToFirst();
 		titleEditText.setText(helper.getNotename(c));

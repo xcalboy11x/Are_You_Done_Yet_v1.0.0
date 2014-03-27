@@ -53,8 +53,9 @@ public class EditNoteActivity extends Activity {
 		helper = new SQLiteHelper(this);
 
 		userId = getIntent().getStringExtra(ListNotesActivity.ID_EXTRA);
-		System.out.println("EditNoteID: "+ userId);
+		noteId = getIntent().getStringExtra(ListNotesActivity.ID_NOTE);
 		isInEditMode = getIntent().getBooleanExtra(ListNotesActivity.isInEditMode, true);
+		System.out.println("EditNoteID: "+ userId);
 		
 		if (isInEditMode)
 				load();
@@ -82,11 +83,13 @@ public class EditNoteActivity extends Activity {
 				{
 					helper.insertNote(titleEditText.getText().toString(), noteEditText.getText().toString(), 
 									Calendar.getInstance().getTime().toString(), Integer.parseInt(userId));
+					System.out.println();
 					finish();
 				}
 				else
 				{
 					// update method
+					helper.updateNote(titleEditText.getText().toString(), noteEditText.getText().toString(), Integer.parseInt(noteId));
 					finish();
 				}
 		
@@ -139,7 +142,6 @@ public class EditNoteActivity extends Activity {
     }
     
     private void load() {
-    	noteId = getIntent().getStringExtra(ListNotesActivity.ID_NOTE);
 		Cursor c = helper.getNoteByNoteId(userId, noteId);
 		
 		c.moveToFirst();

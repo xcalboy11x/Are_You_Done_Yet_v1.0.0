@@ -140,6 +140,13 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		return true;
 	}
 	
+	public void updateNote(String noteName, String noteDescription, int id){
+		ContentValues cv = new ContentValues();
+		
+		cv.put("Notename", noteName);
+		cv.put("Notedescription", noteDescription);
+		getWritableDatabase().update("notes", cv, "_id ='" + id + "'", null);
+	}
 	public Cursor getNotesById (String id) {
 		return (getReadableDatabase().rawQuery("SELECT _id, Notename, Notedescription, Created_at, Userfk FROM notes " +
 				"WHERE Userfk ='"+ id +"'", null));
@@ -161,6 +168,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	public String getCreatedat (Cursor c) {
 		return (c.getString(3));
 	}
+	
 	
 	public String getUserId (String email) {
 		return (getReadableDatabase().rawQuery("SELECT _id FROM users WHERE email ='"+email+"'", null).toString()); 

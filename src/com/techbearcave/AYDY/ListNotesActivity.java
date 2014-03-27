@@ -100,7 +100,7 @@ public class ListNotesActivity extends Activity {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			Intent editNoteIntent = new Intent(view.getContext(), EditNoteActivity.class);
 			editNoteIntent.putExtra(ID_EXTRA, userId);
-			editNoteIntent.putExtra(ID_NOTE, String.valueOf(id));
+			editNoteIntent.putExtra(ID_NOTE, position);
 			editNoteIntent.putExtra(isInEditMode, true);
 			startActivity(editNoteIntent);
 		}

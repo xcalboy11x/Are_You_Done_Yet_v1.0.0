@@ -32,6 +32,7 @@ public class EditNoteActivity extends Activity {
 	private boolean isInEditMode = true ; 
 	private boolean isAddingNote = true; 
 	private String userId;
+	private String noteId;
 	private Button saveButton;
 	private Button cancelButton;
 	private EditText titleEditText;
@@ -53,10 +54,10 @@ public class EditNoteActivity extends Activity {
 
 		userId = getIntent().getStringExtra(ListNotesActivity.ID_EXTRA);
 		System.out.println("EditNoteID: "+ userId);
-		if (isInEditMode) {
-			load();
-		}
-
+		isInEditMode = getIntent().getBooleanExtra(ListNotesActivity.isInEditMode, true);
+		
+		if (isInEditMode)
+				load();
 		
 		// cancel method to cancel a new note
 		cancelButton.setOnClickListener(new OnClickListener() {
@@ -77,19 +78,16 @@ public class EditNoteActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				
-				if(isInEditMode)
+				if(!isInEditMode)
 				{
 					helper.insertNote(titleEditText.getText().toString(), noteEditText.getText().toString(), 
 									Calendar.getInstance().getTime().toString(), Integer.parseInt(userId));
-					saveButton.setText("Save");
 					finish();
 				}
 				else
 				{
-					isInEditMode = true; 
-					saveButton.setText("Save");
-					titleEditText.setEnabled(true);
-					noteEditText.setEnabled(true);
+					// update method
+					finish();
 				}
 		
 				
@@ -141,7 +139,8 @@ public class EditNoteActivity extends Activity {
     }
     
     private void load() {
-		Cursor c = helper.getNoteById(userId);
+    	noteId = getIntent().getStringExtra(ListNotesActivity.ID_NOTE);
+		Cursor c = helper.getNoteByNoteId(userId, noteId);
 		
 		c.moveToFirst();
 		titleEditText.setText(helper.getNotename(c));

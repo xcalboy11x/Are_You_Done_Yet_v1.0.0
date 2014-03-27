@@ -30,6 +30,8 @@ public class ListNotesActivity extends Activity {
 	private NoteAdapter adapter;
 	private String userId;
 	public static String ID_EXTRA = "._ID";
+	public static String ID_NOTE = "._ID";
+	public static String isInEditMode;
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -61,10 +63,10 @@ public class ListNotesActivity extends Activity {
 		registerForContextMenu(notesListView);
 		System.out.println("UserID: " + Integer.parseInt(userId));
 		
-		if (helper.insertNote("First note", "I am one", "1-11-14", Integer.parseInt(userId)))
+		/*if (helper.insertNote("First note", "I am one", "1-11-14", Integer.parseInt(userId)))
 			System.out.println("Yes");
 		else
-			System.out.println("no");
+			System.out.println("no");*/
 			
 
 		model = helper.getNotesById(userId);
@@ -88,7 +90,8 @@ public class ListNotesActivity extends Activity {
 		
 		Intent editNoteIntent = new Intent(this, EditNoteActivity.class);
 		editNoteIntent.putExtra(ID_EXTRA, userId);
-		startActivityForResult(editNoteIntent, 1);
+		editNoteIntent.putExtra(isInEditMode, false);
+		startActivity(editNoteIntent);
 		
 		return true; 
 	}
@@ -97,7 +100,9 @@ public class ListNotesActivity extends Activity {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			Intent editNoteIntent = new Intent(view.getContext(), EditNoteActivity.class);
 			editNoteIntent.putExtra(ID_EXTRA, userId);
-			startActivityForResult(editNoteIntent,1);
+			editNoteIntent.putExtra(isInEditMode, true);
+			editNoteIntent.putExtra(ID_NOTE, String.valueOf(id));
+			startActivity(editNoteIntent);
 		}
 	};
 

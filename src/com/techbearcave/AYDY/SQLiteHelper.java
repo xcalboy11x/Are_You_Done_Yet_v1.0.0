@@ -145,8 +145,9 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 				"WHERE Userfk ='"+ id +"'", null));
 	}
 	
-	public Cursor getNoteById (String id) {
-		return (getReadableDatabase().rawQuery("SELECT _id, Notename, Notedescription, Created_at, Userfk FROM notes WHERE _id ="+ id, null));
+	public Cursor getNoteByNoteId (String noteId, String id) {
+		return (getReadableDatabase().rawQuery("SELECT _id, Notename, Notedescription, Created_at, Userfk FROM notes " +
+				"WHERE _id ='"+ noteId + "' AND Userfk = '" + id + "'", null));
 	}
 	
 	public String getNotename (Cursor c) {

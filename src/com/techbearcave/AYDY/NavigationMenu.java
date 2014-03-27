@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.techbearcave.notetaker.R;
 
 public class NavigationMenu extends Activity {
+	public static String ID_EXTRA = "._ID";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +22,14 @@ public class NavigationMenu extends Activity {
 		final Button taskButton = (Button)findViewById(R.id.taskButton);
 		final Button helpButton = (Button)findViewById(R.id.helpButton);
 		
+		
 		noteButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				
+				String userId = getIntent().getStringExtra(LogInPage.ID_EXTRA);
 				Intent launchNotes = new Intent(NavigationMenu.this, ListNotesActivity.class);
+				launchNotes.putExtra(ID_EXTRA, userId);
 				startActivityForResult(launchNotes, 1);
 				
 			}

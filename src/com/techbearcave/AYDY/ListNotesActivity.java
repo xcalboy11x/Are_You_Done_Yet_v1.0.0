@@ -1,9 +1,5 @@
 package com.techbearcave.AYDY;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,7 +29,7 @@ public class ListNotesActivity extends Activity {
 	private Cursor model;
 	private SQLiteHelper helper;
 	private NoteAdapter adapter;
-
+	private String userId;
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -61,25 +56,18 @@ public class ListNotesActivity extends Activity {
 		setContentView(R.layout.activity_list_notes);
 		notesListView = (ListView)findViewById(R.id.notesListView);
 		helper = new SQLiteHelper(this);
-		
-		/*notesListView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view, int itemNumber, long id) {
-				
-				Intent editNoteIntent = new Intent(view.getContext(), EditNoteActivity.class);
-				editNoteIntent.putExtra(ID_EXTRA, String.valueOf(id));
-				//editingNoteId = itemNumber;
-				startActivityForResult(editNoteIntent,1);
-				
-			}
-		});*/
+		userId = getIntent().getStringExtra(NavigationMenu.ID_EXTRA);
 		
 		registerForContextMenu(notesListView);
+		System.out.println("UserID: " + Integer.parseInt(userId));
+		
+		if (helper.insertNote("First note", "I am one", "1-11-14", Integer.parseInt(userId)))
+			System.out.println("Yes");
+		else
+			System.out.println("no");
+			
 
-		helper.insertNote("First note", "I am one", "1-11-14" , "1");
-
-		model = helper.getNotesById(usersId);
+		model = helper.getNotesById(userId);
 		startManagingCursor(model);
 		adapter = new NoteAdapter(model);
 		notesListView.setAdapter(adapter);

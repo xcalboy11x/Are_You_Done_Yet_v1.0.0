@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 public class SQLiteHelper extends SQLiteOpenHelper{
 	private static final String DATABASE_NAME = "areyoudoneyet.db";
@@ -32,7 +33,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     // Note table create statement
     private static final String CREATE_TABLE_USER = "CREATE TABLE "
             + TABLE_USER + "(" + USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
-    		+ "Username TEXT not null unique, Fname TEXT, Lname TEXT, Password TEXT, Email TEXT" + ");";
+    		+ "Username TEXT NOT NULL UNIQUE, Fname TEXT, Lname TEXT, Password TEXT, Email TEXT" + ");";
  
     // Tag table create statement
     private static final String CREATE_TABLE_TASKS = "CREATE TABLE " + TABLE_TASK
@@ -40,7 +41,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             + TASK_NAME + " TEXT, "
     		+ TASK + " TEXT, " 
     		+ KEY_CREATED_AT + " DATETIME," 
-            + FOREIGN_KEY + " integer, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
+            + FOREIGN_KEY + " INTEGER, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
             + TABLE_USER + "(" + USER_ID + "));";
  
     // todo_tag table create statement
@@ -49,9 +50,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     		+ NOTE_NAME + " TEXT, "
     		+ NOTE_DESCRIPTION + " TEXT, "
             + KEY_CREATED_AT + " DATETIME," 
-    	//	+ FOREIGN_KEY + " integer, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
-    	//	+ TABLE_USER + "(" + USER_ID + "));";
-            + "Userfk INTEGER);";
+    		+ FOREIGN_KEY + " INTEGER, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
+    		+ TABLE_USER + "(" + USER_ID + "));";
 	
 	public SQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, SCHEMA_VERSION);
@@ -76,7 +76,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         onCreate(db);
     }
 	
-	public void insertUser(String userName, String firstName, String lastName, String password, String email) {
+	public boolean insertUser(String userName, String firstName, String lastName, String password, String email) {
 		ContentValues cv = new ContentValues();
 		
 		cv.put("Username", userName);
@@ -84,14 +84,19 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		cv.put("Lname", lastName);
 		cv.put("Password", password);
 		cv.put("Email", email);			
-
-		getWritableDatabase().insert("users", "Fname", cv);
+		try{
+			getWritableDatabase().insertOrThrow("users", "Fname", cv);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 	
 	
 	
 	
-	public void insertTask(String taskName, String task, String date, String userId) {
+	public boolean insertTask(String taskName, String task, String date, String userId) {
 		ContentValues cv = new ContentValues();
 		
 		cv.put("Taskname", taskName);
@@ -99,7 +104,13 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		cv.put("Created_at", date);
 		cv.put("Userfk", userId);
 
-		getWritableDatabase().insert("tasks", "Task", cv);
+		try{
+			getWritableDatabase().insertOrThrow("tasks", "Task", cv);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 	
 	public Cursor getTasks () {
@@ -112,7 +123,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	
 	
 	
-	public void insertNote(String noteName, String noteDescription, String date, String userId) {
+	public boolean insertNote(String noteName, String noteDescription, String date, int userId) {
 		ContentValues cv = new ContentValues();
 		
 		cv.put("Notename", noteName);
@@ -120,12 +131,18 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		cv.put("Created_at", date);
 		cv.put("Userfk", userId);
 
-		getWritableDatabase().insert("notes", "note", cv);
+		try{
+			getWritableDatabase().insertOrThrow("notes", "Notename", cv);
+		}
+		catch (Exception e) {
+			return false;
+		}
+		return true;
 	}
 	
 	public Cursor getNotesById (String id) {
-		return (getReadableDatabase().rawQuery("SELECT _id, Notename, Notedescription, Created_at, Userfk FROM notes ORDER BY Notename " +
-				"WHERE _id ="+ id, null));
+		return (getReadableDatabase().rawQuery("SELECT _id, Notename, Notedescription, Created_at, Userfk FROM notes " +
+				"WHERE Userfk ='"+ id +"'", null));
 	}
 	
 	public Cursor getNoteById (String id) {
@@ -145,14 +162,14 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	}
 	
 	public String getUserId (String email) {
-		return (getReadableDatabase().rawQuery("SELECT _id FROM users WHERE email ="+ email, null).toString()); 
+		return (getReadableDatabase().rawQuery("SELECT _id FROM users WHERE email ='"+email+"'", null).toString()); 
 	}
 	
-	public String getUsername (String username){
-		return (getReadableDatabase().rawQuery("SELECT Username FROM users WHERE Username =" + username, null).toString());
+	public Cursor getUsername (String username){
+		return (getReadableDatabase().rawQuery("SELECT Username, Password, _id FROM users WHERE Username='"+username+"'", null));
 	}
 	
 	public String getPassword (String password){
-		return (getReadableDatabase().rawQuery("SELECT Password FROM users WHERE Password =" + password, null).toString());
+		return (getReadableDatabase().rawQuery("SELECT Password FROM users WHERE Password ='"+password+"'", null).toString());
 	}
 }

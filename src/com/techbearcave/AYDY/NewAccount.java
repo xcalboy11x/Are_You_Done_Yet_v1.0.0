@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.techbearcave.notetaker.R;
 
@@ -42,16 +43,20 @@ public class NewAccount extends Activity {
 			public void onClick(View v) {
 				if(checkAccountFields())
 				{
-
-					helper.insertUser(userName.toString(), firstName.toString(), lastName.toString(), passWord.toString(), emailAddress.toString());
-					// I swear you need to getText + toString it first
-					helper.insertUser(userName.getText().toString(), firstName.getText().toString(), lastName.getText().toString(), 
-							passWord.getText().toString(), emailAddress.getText().toString());
-					Intent navIntent = new Intent(NewAccount.this, LogInPage.class);
-					startActivity(navIntent);
+					if (helper.insertUser(userName.getText().toString(), firstName.getText().toString(), lastName.getText().toString(), 
+							passWord.getText().toString(), emailAddress.getText().toString())) 
+					{
+						Intent navIntent = new Intent(NewAccount.this, LogInPage.class);
+						startActivity(navIntent);
+					}
+					else
+					{
+						Toast.makeText(getApplicationContext(), "Username is taken", Toast.LENGTH_SHORT).show();
+					}
 				}
 				else
-					System.out.println("Wrong");
+					Toast.makeText(getApplicationContext(), "Missing field/s", Toast.LENGTH_SHORT).show();
+
 				
 			}
 		});
@@ -101,7 +106,6 @@ public class NewAccount extends Activity {
 		}
 		else 
 			return true;
-
 	}
 
 }

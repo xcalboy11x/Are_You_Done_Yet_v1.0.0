@@ -2,6 +2,7 @@ package com.techbearcave.AYDY;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.techbearcave.notetaker.R;
@@ -17,7 +17,7 @@ import com.techbearcave.notetaker.R;
 public class LogInPage extends Activity {
 
 	private SQLiteHelper helper;
-	private String EXTRA_ID = "";
+	public static String ID_EXTRA = "._ID";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,37 +39,40 @@ public class LogInPage extends Activity {
 				
 				String username	= usernamefield.getText().toString();
 				String password = passwordfield.getText().toString();
-				String dbUsername = helper.getUsername(username);
-				String dbPassword = helper.getPassword(password);
-				Log.i("username", username);
 				
-				if(username.length() >0 & password.length() >0)
-				{
-					try 
-					{
+				if(username.length() >0 && password.length() >0){
+					Cursor c = helper.getUsername(username);
 
-						
-						if(username.equals(dbUsername) && password.equals(dbPassword))
-						{
-							System.out.println("Username & Password matches");
-							Toast.makeText(getApplicationContext(), "Successful Login!", Toast.LENGTH_LONG).show();
-							
-							Intent navIntent = new Intent(LogInPage.this, NavigationMenu.class);
-							startActivity(navIntent);
+					if (c != null) {
+
+						if (c.moveToFirst()) {
+							do {
+								String dbUserName = c.getString(c
+										.getColumnIndex("Username"));
+								String dbPassword = c.getString(c
+										.getColumnIndex("Password"));
+								String dbUserId = c.getString(c
+										.getColumnIndex("_id"));
+								System.out.println("ID: "+dbUserId);
+								System.out.println("User: "+dbUserName);
+								System.out.println("PW: "+dbPassword);
+								if (dbUserName.equals(username)&&dbPassword.equals(password)) {
+									Intent intent = new Intent(LogInPage.this, NavigationMenu.class);
+									intent.putExtra(ID_EXTRA, String.valueOf(dbUserId));
+									startActivity(intent);
+								}
+								else
+									Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_SHORT).show();
+
+							} 
+							while (c.moveToNext());
 						}
-							
+						else
+							Toast.makeText(getApplicationContext(), "Wrong username or password", Toast.LENGTH_SHORT).show();
+
 					}
-					
-					catch (Exception e) {
-						System.out.println("Username is " + username);
-						System.out.println("dbUsername is " + dbUsername);
-						System.out.println("Password is " + password);
-						System.out.println("dbPassword is " + dbPassword);
-						
-						Toast.makeText(getApplicationContext(), "Unable to login", Toast.LENGTH_LONG).show(); 
-						}
-					
-				}
+				} else
+					Toast.makeText(getApplicationContext(), "Missing field/s", Toast.LENGTH_SHORT).show();
 				
 			}
 		});

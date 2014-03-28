@@ -27,13 +27,20 @@ CalendarView calendar;
 		final Button helpButton = (Button)findViewById(R.id.helpButton);
 		
 		calendar = (CalendarView)findViewById(R.id.calendar);
-		calendar.setOnDateChangeListener(new OnDateChangeListener(){
-
-			@Override
-			public void onSelectedDayChange(CalendarView view,
-			int year, int month, int dayOfMonth) {
-			Toast.makeText(getApplicationContext(),
-			dayOfMonth +"/"+month+"/"+ year,Toast.LENGTH_LONG).show();}});
+       
+		calendar.setOnDateChangeListener(new OnDateChangeListener() {
+			
+		@Override
+		public void onSelectedDayChange(CalendarView view, int year, int month,
+				int dayOfMonth) {
+			// TODO Auto-generated method stub
+			month++; // month fix, gives february when click on march so I added + 1
+			Toast.makeText(getBaseContext(),"Selected Date is\n\n"
+				+month+" : "+dayOfMonth+" : "+year ,
+				Toast.LENGTH_LONG).show();
+		}
+	});
+    
 		
 		noteButton.setOnClickListener(new OnClickListener() {
 			

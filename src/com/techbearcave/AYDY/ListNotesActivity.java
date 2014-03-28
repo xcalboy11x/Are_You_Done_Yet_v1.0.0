@@ -29,8 +29,9 @@ public class ListNotesActivity extends Activity {
 	private SQLiteHelper helper;
 	private NoteAdapter adapter;
 	private String userId;
-	public static String ID_EXTRA = "._ID";
-	public static String ID_NOTE = "._ID";
+	public static String ID_EXTRA = "";
+	public static String ID_EDIT = "";
+	public static String ID_NOTE = "";
 	public static String isInEditMode;
 	private TextView noteName = null;
 	private View row = null;
@@ -87,14 +88,9 @@ public class ListNotesActivity extends Activity {
 		
 		//generate context menu for long press - "Delete" note
 		registerForContextMenu(notesListView);
+
 		
-		System.out.println("UserID: " + Integer.parseInt(userId));
-		
-		/*if (helper.insertNote("First note", "I am one", "1-11-14", Integer.parseInt(userId)))
-			System.out.println("Yes");
-		else
-			System.out.println("no");*/
-			
+	
 
 		model = helper.getNotesById(userId);
 		startManagingCursor(model);
@@ -116,19 +112,26 @@ public class ListNotesActivity extends Activity {
 
 		
 		Intent editNoteIntent = new Intent(this, EditNoteActivity.class);
-		editNoteIntent.putExtra(ID_EXTRA, userId);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("stringToPassOn", userId);
+		
+		editNoteIntent.putExtras(bundle);
 		editNoteIntent.putExtra(isInEditMode, false);
 		startActivity(editNoteIntent);
 		
 		return true; 
 	}
-	// safsaf
+
 	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			String hi = helper.getNoteId(model);
+			
 			Intent editNoteIntent = new Intent(view.getContext(), EditNoteActivity.class);
-			editNoteIntent.putExtra(ID_EXTRA, userId);
+			Bundle bundle = new Bundle ();
+			bundle.putSerializable("stringToPassOn", userId);
+			bundle.putSerializable("positionTracker", hi);
+			editNoteIntent.putExtras(bundle);
 			editNoteIntent.putExtra(isInEditMode, true);
-			editNoteIntent.putExtra(ID_NOTE, String.valueOf(id));
 			startActivity(editNoteIntent);
 		}
 	};

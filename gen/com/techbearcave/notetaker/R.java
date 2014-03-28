@@ -62,16 +62,15 @@ public final class R {
         public static final int usernameText=0x7f080001;
     }
     public static final class layout {
-        public static final int activity_eatmyapple=0x7f030000;
-        public static final int activity_edit_note=0x7f030001;
-        public static final int activity_edit_task=0x7f030002;
-        public static final int activity_list_notes=0x7f030003;
-        public static final int activity_list_tasks=0x7f030004;
-        public static final int activity_log_in_page=0x7f030005;
-        public static final int activity_navigation_menu=0x7f030006;
-        public static final int activity_new_account=0x7f030007;
-        public static final int activity_register=0x7f030008;
-        public static final int row=0x7f030009;
+        public static final int activity_edit_note=0x7f030000;
+        public static final int activity_edit_task=0x7f030001;
+        public static final int activity_list_notes=0x7f030002;
+        public static final int activity_list_tasks=0x7f030003;
+        public static final int activity_log_in_page=0x7f030004;
+        public static final int activity_navigation_menu=0x7f030005;
+        public static final int activity_new_account=0x7f030006;
+        public static final int activity_register=0x7f030007;
+        public static final int row=0x7f030008;
     }
     public static final class menu {
         public static final int context_menu=0x7f070000;

@@ -58,7 +58,7 @@ public class LogInPage extends Activity {
 								System.out.println("PW: "+dbPassword);
 								if (dbUserName.equals(username)&&dbPassword.equals(password)) {
 									Intent intent = new Intent(LogInPage.this, NavigationMenu.class);
-									intent.putExtra(ID_EXTRA, String.valueOf(dbUserId));
+									intent.putExtra(ID_EXTRA, dbUserId);
 									startActivity(intent);
 								}
 								else

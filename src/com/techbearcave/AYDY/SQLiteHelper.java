@@ -157,6 +157,10 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 				"WHERE _id ='"+ noteId + "' AND Userfk = '" + id + "'", null));
 	}
 	
+	public String getNoteId (Cursor c) {
+		return (c.getString(0));
+	}
+	
 	public String getNotename (Cursor c) {
 		return (c.getString(1));
 	}

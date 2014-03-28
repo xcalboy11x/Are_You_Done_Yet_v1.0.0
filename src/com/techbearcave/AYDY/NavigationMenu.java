@@ -7,12 +7,15 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.CalendarView.OnDateChangeListener;
+import android.widget.Toast;
 
 import com.techbearcave.notetaker.R;
 
 public class NavigationMenu extends Activity {
 	public static String ID_EXTRA = "._ID";
-
+CalendarView calendar;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,6 +26,14 @@ public class NavigationMenu extends Activity {
 		final Button timerButton = (Button)findViewById(R.id.timerButton);
 		final Button helpButton = (Button)findViewById(R.id.helpButton);
 		
+		calendar = (CalendarView)findViewById(R.id.calendar);
+		calendar.setOnDateChangeListener(new OnDateChangeListener(){
+
+			@Override
+			public void onSelectedDayChange(CalendarView view,
+			int year, int month, int dayOfMonth) {
+			Toast.makeText(getApplicationContext(),
+			dayOfMonth +"/"+month+"/"+ year,Toast.LENGTH_LONG).show();}});
 		
 		noteButton.setOnClickListener(new OnClickListener() {
 			

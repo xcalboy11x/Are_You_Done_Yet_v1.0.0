@@ -107,7 +107,7 @@ public class EditNoteActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {				
 				
-				Intent returnIntent = new Intent();
+				
 				
 				finish();
 			}
@@ -140,7 +140,7 @@ public class EditNoteActivity extends Activity {
     
     private void load() {
     	noteId = getIntent().getStringExtra(ListNotesActivity.ID_NOTE);
-		Cursor c = helper.getNoteByNoteId(userId, noteId);
+		Cursor c = helper.getNoteByNoteId(noteId, userId);
 		
 		c.moveToFirst();
 		titleEditText.setText(helper.getNotename(c));

@@ -32,16 +32,41 @@ public class ListNotesActivity extends Activity {
 	public static String ID_EXTRA = "._ID";
 	public static String ID_NOTE = "._ID";
 	public static String isInEditMode;
+	private TextView noteName = null;
+	private View row = null;
 
+	
+	
+	// Write the code here to delete the note from long press
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		// remove stuff
+		notesListView = (ListView)findViewById(R.id.notesListView);
+		notesListView.setAdapter(adapter);
+		
+		long test = adapter.getItemId(info.position);
+		System.out.println("Here is the note position in the listview: " + test);
+		
+		
+		SQLiteHelper helpme = new SQLiteHelper(this);
+		//String printUserId = helpme.getUserId("huangt@wit.edu");
+		//System.out.println("The user ID is:" + printUserId);
+		helpme.deleteNote(test);
+		
+		
+		// 1. Find the position in ListView
+		// 2. Delete the position in Listview
+		// 3. Send delete Query to database
+		// 4. Redisplay the Listview
+		
+		
 		
 		return true;
 	}
 
+	
+	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -60,7 +85,9 @@ public class ListNotesActivity extends Activity {
 		helper = new SQLiteHelper(this);
 		userId = getIntent().getStringExtra(NavigationMenu.ID_EXTRA);
 		
+		//generate context menu for long press - "Delete" note
 		registerForContextMenu(notesListView);
+		
 		System.out.println("UserID: " + Integer.parseInt(userId));
 		
 		/*if (helper.insertNote("First note", "I am one", "1-11-14", Integer.parseInt(userId)))

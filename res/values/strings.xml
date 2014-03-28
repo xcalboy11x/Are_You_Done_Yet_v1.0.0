@@ -46,4 +46,5 @@
     <string name="registerEmailField"></string>
     <string name="registerSubmitButton">Submit</string>
     <string name="title_activity_new_account">NewAccount</string>
+    <string name="title_activity_timer">title_activity_timer</string>
 </resources>

@@ -20,6 +20,7 @@ public class NavigationMenu extends Activity {
 		
 		final Button noteButton = (Button)findViewById(R.id.noteButton);
 		final Button taskButton = (Button)findViewById(R.id.taskButton);
+		final Button timerButton = (Button)findViewById(R.id.timerButton);
 		final Button helpButton = (Button)findViewById(R.id.helpButton);
 		
 		
@@ -46,12 +47,23 @@ public class NavigationMenu extends Activity {
 			}
 		});
 
-	
+		timerButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				Intent launchTimer = new Intent(NavigationMenu.this, TimerActivity.class);
+				startActivity(launchTimer);
+				
+			}
+		});
+		
 		helpButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				//Intent launchHelp = new Intent(NavigationMenu.this, activity_help_menu.xml);
+				Intent launchHelpMenu = new Intent(NavigationMenu.this, HelpMenu.class);
+				startActivity(launchHelpMenu);
 				
 			}
 		});

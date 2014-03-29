@@ -53,7 +53,6 @@ public class EditNoteActivity extends Activity {
 		helper = new SQLiteHelper(this);
 		Bundle bundle = this.getIntent().getExtras();
 		userId = (String) bundle.getSerializable ("stringToPassOn");
-		
 		isInEditMode = getIntent().getBooleanExtra(ListNotesActivity.isInEditMode, true);
 		
 		System.out.println("userID: "+ userId);
@@ -147,8 +146,8 @@ public class EditNoteActivity extends Activity {
     }
     
     private void load() {
-
-    	noteId = getIntent().getStringExtra(ListNotesActivity.ID_NOTE);
+    	Bundle bundle = this.getIntent().getExtras();
+		noteId = (String) bundle.getSerializable("positionTracker");
 		Cursor c = helper.getNoteByNoteId(noteId, userId);
 		
 

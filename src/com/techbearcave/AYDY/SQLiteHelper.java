@@ -11,7 +11,7 @@ import android.widget.Toast;
 public class SQLiteHelper extends SQLiteOpenHelper{
 	private static final String DATABASE_NAME = "areyoudoneyet.db";
 	private static final int SCHEMA_VERSION = 1;
-	private SQLiteDatabase db;
+	
 	
 	// Table Names
     private static final String TABLE_USER = "users";
@@ -195,9 +195,9 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
 	}
 	
-	public long deleteNote (long position){
-		Log.d("Deleting...", position + "");
-		return db.delete(TABLE_NOTE, "NOTE_ID" + "="+ position, null);
-		//Long.valueOf(getReadableDatabase().rawQuery("DELETE _id FROM notes WHERE _id ='"+position+"'", null).toString());
+	public void deleteNote (String noteId){
+		Log.d("Deleting Note Id: ", noteId + "");
+		getWritableDatabase().delete(TABLE_NOTE, "_id" + "='" + noteId+ "'", null);
+
 	}
 }

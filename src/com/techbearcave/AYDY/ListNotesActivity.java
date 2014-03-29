@@ -48,16 +48,20 @@ public class ListNotesActivity extends Activity {
 		
 		long test = adapter.getItemId(info.position);
 		System.out.println("Here is the note position in the listview: " + test);
+		String noteId = String.valueOf(test);
 		
+		Cursor c = helper.getNoteByNoteId(noteId, userId);
+		c.moveToFirst();
+		helper.deleteNote(noteId);
 		
-		SQLiteHelper helpme = new SQLiteHelper(this);
-		//String printUserId = helpme.getUserId("huangt@wit.edu");
-		//System.out.println("The user ID is:" + printUserId);
-		helpme.deleteNote(test);
+		c.close();
+		
+		notesListView.setAdapter(adapter);
+		adapter.notifyDataSetChanged(); //this is suppose to notify adapter of changes and redraw listview
 		
 		
 		// 1. Find the position in ListView
-		// 2. Delete the position in Listview
+		// 2. Find NoteID in Listview
 		// 3. Send delete Query to database
 		// 4. Redisplay the Listview
 		

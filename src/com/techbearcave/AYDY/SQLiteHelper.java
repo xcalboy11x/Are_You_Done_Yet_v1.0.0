@@ -5,11 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 public class SQLiteHelper extends SQLiteOpenHelper{
 	private static final String DATABASE_NAME = "areyoudoneyet.db";
 	private static final int SCHEMA_VERSION = 1;
+	
 	
 	// Table Names
     private static final String TABLE_USER = "users";
@@ -178,11 +180,24 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		return (getReadableDatabase().rawQuery("SELECT _id FROM users WHERE email ='"+email+"'", null).toString()); 
 	}
 	
+
 	public Cursor getUsername (String username){
 		return (getReadableDatabase().rawQuery("SELECT Username, Password, _id FROM users WHERE Username='"+username+"'", null));
 	}
 	
 	public String getPassword (String password){
 		return (getReadableDatabase().rawQuery("SELECT Password FROM users WHERE Password ='"+password+"'", null).toString());
+
+	}
+	
+	public Cursor getNoteID (String note_id){
+		return (getReadableDatabase().rawQuery("SELECT _id FROM notes WHERE _id ='"+note_id+"'", null));
+
+	}
+	
+	public void deleteNote (String noteId){
+		Log.d("Deleting Note Id: ", noteId + "");
+		getWritableDatabase().delete(TABLE_NOTE, "_id" + "='" + noteId+ "'", null);
+
 	}
 }

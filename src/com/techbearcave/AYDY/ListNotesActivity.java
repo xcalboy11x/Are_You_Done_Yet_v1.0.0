@@ -56,9 +56,9 @@ public class ListNotesActivity extends Activity {
 		
 		c.close();
 		
-		notesListView.setAdapter(adapter);
-		adapter.notifyDataSetChanged(); //this is suppose to notify adapter of changes and redraw listview
 		
+		//this is suppose to notify adapter of changes and redraw listview
+		adapter.notifyDataSetChanged(); 
 		
 		// 1. Find the position in ListView
 		// 2. Find NoteID in Listview

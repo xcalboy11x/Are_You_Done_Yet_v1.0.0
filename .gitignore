@@ -8,3 +8,8 @@ bin/classes.dex
 bin/jarlist.cache
 bin/resources.ap_
 bin/dexedLibs/android-support-v4-2eeb82de24fbb2c81dc0c6f9d4bd28fc.jar
+bin/classes/com/techbearcave/notetaker/R$layout.class
+bin/classes/com/techbearcave/notetaker/R$menu.class
+bin/classes/com/techbearcave/notetaker/R$string.class
+bin/classes/com/techbearcave/notetaker/R$style.class
+gen/com/techbearcave/notetaker/R.java

@@ -7,12 +7,15 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.CalendarView.OnDateChangeListener;
+import android.widget.Toast;
 
 import com.techbearcave.notetaker.R;
 
 public class NavigationMenu extends Activity {
 	public static String ID_EXTRA = "._ID";
-
+CalendarView calendar;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -20,8 +23,24 @@ public class NavigationMenu extends Activity {
 		
 		final Button noteButton = (Button)findViewById(R.id.noteButton);
 		final Button taskButton = (Button)findViewById(R.id.taskButton);
+		final Button timerButton = (Button)findViewById(R.id.timerButton);
 		final Button helpButton = (Button)findViewById(R.id.helpButton);
 		
+		calendar = (CalendarView)findViewById(R.id.calendar);
+       
+		calendar.setOnDateChangeListener(new OnDateChangeListener() {
+			
+		@Override
+		public void onSelectedDayChange(CalendarView view, int year, int month,
+				int dayOfMonth) {
+			// TODO Auto-generated method stub
+			month++; // month fix, gives february when click on march so I added + 1
+			Toast.makeText(getBaseContext(),"Selected Date is\n\n"
+				+month+" : "+dayOfMonth+" : "+year ,
+				Toast.LENGTH_LONG).show();
+		}
+	});
+    
 		
 		noteButton.setOnClickListener(new OnClickListener() {
 			
@@ -46,12 +65,23 @@ public class NavigationMenu extends Activity {
 			}
 		});
 
-	
+		timerButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				Intent launchTimer = new Intent(NavigationMenu.this, TimerActivity.class);
+				startActivity(launchTimer);
+				
+			}
+		});
+		
 		helpButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				//Intent launchHelp = new Intent(NavigationMenu.this, activity_help_menu.xml);
+				Intent launchHelpMenu = new Intent(NavigationMenu.this, HelpMenu.class);
+				startActivity(launchHelpMenu);
 				
 			}
 		});

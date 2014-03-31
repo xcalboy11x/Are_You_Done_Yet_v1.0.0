@@ -51,15 +51,19 @@ public class EditNoteActivity extends Activity {
 		noteEditText = (EditText)findViewById(R.id.noteEditText);
 		dateTextView = (TextView)findViewById(R.id.dateTextView);
 		helper = new SQLiteHelper(this);
-
-		userId = getIntent().getStringExtra(ListNotesActivity.ID_EXTRA);
-		noteId = getIntent().getStringExtra(ListNotesActivity.ID_NOTE);
+		Bundle bundle = this.getIntent().getExtras();
+		userId = (String) bundle.getSerializable ("stringToPassOn");
 		isInEditMode = getIntent().getBooleanExtra(ListNotesActivity.isInEditMode, true);
-		System.out.println("EditNoteID: "+ userId);
+		
+		System.out.println("userID: "+ userId);
+		
 		
 		if (isInEditMode)
-				load();
-		
+		{
+			noteId = (String) bundle.getSerializable ("positionTracker");
+			System.out.println("noteID: "+ noteId);
+			load();
+		}
 		// cancel method to cancel a new note
 		cancelButton.setOnClickListener(new OnClickListener() {
 			
@@ -78,22 +82,22 @@ public class EditNoteActivity extends Activity {
         	
 			@Override
 			public void onClick(View v) {
-				
+				System.out.println("Inside click");
 				if(!isInEditMode)
 				{
+					System.out.println("Add mode");
 					helper.insertNote(titleEditText.getText().toString(), noteEditText.getText().toString(), 
-									Calendar.getInstance().getTime().toString(), Integer.parseInt(userId));
-					System.out.println();
+									Calendar.getInstance().getTime().toString(), Integer.parseInt(userId));	
 					finish();
 				}
 				else
 				{
 					// update method
+					System.out.println("Edit mode");
 					helper.updateNote(titleEditText.getText().toString(), noteEditText.getText().toString(), Integer.parseInt(noteId));
 					finish();
 				}
-		
-				
+
 			}
 		});
     }
@@ -110,7 +114,7 @@ public class EditNoteActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {				
 				
-				Intent returnIntent = new Intent();
+				
 				
 				finish();
 			}
@@ -142,9 +146,16 @@ public class EditNoteActivity extends Activity {
     }
     
     private void load() {
-		Cursor c = helper.getNoteByNoteId(userId, noteId);
+    	Bundle bundle = this.getIntent().getExtras();
+		noteId = (String) bundle.getSerializable("positionTracker");
+		Cursor c = helper.getNoteByNoteId(noteId, userId);
 		
+
+		System.out.println("Edit mode");
+		
+
 		c.moveToFirst();
+		
 		titleEditText.setText(helper.getNotename(c));
 		noteEditText.setText(helper.getNotedescription(c));
 		dateTextView.setText(helper.getCreatedat(c));

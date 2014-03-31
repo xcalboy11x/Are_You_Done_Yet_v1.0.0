@@ -29,19 +29,49 @@ public class ListNotesActivity extends Activity {
 	private SQLiteHelper helper;
 	private NoteAdapter adapter;
 	private String userId;
-	public static String ID_EXTRA = "._ID";
-	public static String ID_NOTE = "._ID";
+	public static String ID_EXTRA = "";
+	public static String ID_EDIT = "";
+	public static String ID_NOTE = "";
 	public static String isInEditMode;
+	private TextView noteName = null;
+	private View row = null;
 
+	
+	
+	// Write the code here to delete the note from long press
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		// remove stuff
+		notesListView = (ListView)findViewById(R.id.notesListView);
+		notesListView.setAdapter(adapter);
+		
+		long test = adapter.getItemId(info.position);
+		System.out.println("Here is the note position in the listview: " + test);
+		String noteId = String.valueOf(test);
+		
+		Cursor c = helper.getNoteByNoteId(noteId, userId);
+		c.moveToFirst();
+		helper.deleteNote(noteId);
+		
+		c.close();
+		
+		notesListView.setAdapter(adapter);
+		adapter.notifyDataSetChanged(); //this is suppose to notify adapter of changes and redraw listview
+		
+		
+		// 1. Find the position in ListView
+		// 2. Find NoteID in Listview
+		// 3. Send delete Query to database
+		// 4. Redisplay the Listview
+		
+		
 		
 		return true;
 	}
 
+	
+	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -60,14 +90,11 @@ public class ListNotesActivity extends Activity {
 		helper = new SQLiteHelper(this);
 		userId = getIntent().getStringExtra(NavigationMenu.ID_EXTRA);
 		
+		//generate context menu for long press - "Delete" note
 		registerForContextMenu(notesListView);
-		System.out.println("UserID: " + Integer.parseInt(userId));
+
 		
-		/*if (helper.insertNote("First note", "I am one", "1-11-14", Integer.parseInt(userId)))
-			System.out.println("Yes");
-		else
-			System.out.println("no");*/
-			
+	
 
 		model = helper.getNotesById(userId);
 		startManagingCursor(model);
@@ -89,18 +116,25 @@ public class ListNotesActivity extends Activity {
 
 		
 		Intent editNoteIntent = new Intent(this, EditNoteActivity.class);
-		editNoteIntent.putExtra(ID_EXTRA, userId);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("stringToPassOn", userId);
+		
+		editNoteIntent.putExtras(bundle);
 		editNoteIntent.putExtra(isInEditMode, false);
 		startActivity(editNoteIntent);
 		
 		return true; 
 	}
-	// safsaf
+
 	private AdapterView.OnItemClickListener onListClick = new AdapterView.OnItemClickListener() {
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			String hi = helper.getNoteId(model);
+			
 			Intent editNoteIntent = new Intent(view.getContext(), EditNoteActivity.class);
-			editNoteIntent.putExtra(ID_EXTRA, userId);
-			editNoteIntent.putExtra(ID_NOTE, position);
+			Bundle bundle = new Bundle ();
+			bundle.putSerializable("stringToPassOn", userId);
+			bundle.putSerializable("positionTracker", hi);
+			editNoteIntent.putExtras(bundle);
 			editNoteIntent.putExtra(isInEditMode, true);
 			startActivity(editNoteIntent);
 		}

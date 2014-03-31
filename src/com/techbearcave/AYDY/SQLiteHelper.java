@@ -200,4 +200,17 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		getWritableDatabase().delete(TABLE_NOTE, "_id" + "='" + noteId+ "'", null);
 
 	}
+	
+	public String getTaskId (Cursor c) {
+		return (c.getString(0));
+	}
+	
+	public String getTaskname (Cursor c) {
+		return (c.getString(1));
+	}
+	
+	public String getTaskdescription (Cursor c) {
+		return (c.getString(2));
+	}
+	
 }

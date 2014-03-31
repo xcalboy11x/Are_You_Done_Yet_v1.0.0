@@ -114,7 +114,11 @@ public class EditNoteActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {				
 				
-				
+				// Implement delete code here
+				Cursor c = helper.getNoteByNoteId(noteId, userId);
+				c.moveToFirst();
+				helper.deleteNote(noteId);
+				c.close();
 				
 				finish();
 			}
@@ -125,7 +129,7 @@ public class EditNoteActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				
-				
+				finish();
 			}
 		});
     	
@@ -136,12 +140,11 @@ public class EditNoteActivity extends Activity {
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // display delete button in editing / new note screen
         getMenuInflater().inflate(R.menu.delete_note_from_menu, menu);
-        if(isAddingNote)
-        {
-        	menu.removeItem(R.id.deleteNote);
-        }
+        
+        
+        
         return true;
     }
     

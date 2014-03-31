@@ -16,18 +16,18 @@
         <activity
             android:name="com.techbearcave.AYDY.LogInPage"
             android:label="@string/title_activity_log_in_page" >
-            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
             
         </activity>
         <activity
             android:name="com.techbearcave.AYDY.NavigationMenu"
             android:label="@string/title_activity_navigation_menu" >
-                   <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+             
         </activity>
         <activity
             android:name="com.techbearcave.AYDY.ListNotesActivity"

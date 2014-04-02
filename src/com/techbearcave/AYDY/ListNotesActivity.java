@@ -24,17 +24,15 @@ import com.techbearcave.notetaker.R;
 public class ListNotesActivity extends Activity {
 	
 	private ListView notesListView;
-	private int editingNoteId = -1; 
 	private Cursor model;
 	private SQLiteHelper helper;
 	private NoteAdapter adapter;
 	private String userId;
-	public static String ID_EXTRA = "";
-	public static String ID_EDIT = "";
-	public static String ID_NOTE = "";
+	//public static String ID_EXTRA = "";
+	//public static String ID_EDIT = "";
+	//public static String ID_NOTE = "";
 	public static String isInEditMode;
 	private TextView noteName = null;
-	private View row = null;
 
 	
 	

@@ -1,154 +1,96 @@
 package com.techbearcave.AYDY;
 
-import java.util.Calendar;
+
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.techbearcave.notetaker.R;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.database.Cursor;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
-public class EditTaskActivity extends Activity {
+public class EditTaskActivity extends Activity implements OnItemSelectedListener {
 	
-	public static final int RESULT_DELETE = -9000;
-	private boolean isInEditMode = true ; 
-	private boolean isAddingNote = true; 
-	private String userId;
-	private String taskId;
-	private Button saveButton;
-	private Button cancelButton;
-	private EditText titleEditText;
-	private EditText taskEditText;
-	private SQLiteHelper helper;
-	private TextView dateTextView;
+	private CheckBox alertBox;
+	private Spinner monthSpinner;
+	private Spinner daySpinner;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_task);
 		
-		saveButton = (Button)findViewById(R.id.saveButton);
-        cancelButton = (Button)findViewById(R.id.cancelButton);
-    	titleEditText = (EditText)findViewById(R.id.titleEditText);
-		taskEditText = (EditText)findViewById(R.id.taskEditText);
-		dateTextView = (TextView)findViewById(R.id.dateTextView);
-		helper = new SQLiteHelper(this);
-		Bundle bundle = this.getIntent().getExtras();
-		userId = (String) bundle.getSerializable ("stringToPassOn");
-		isInEditMode = getIntent().getBooleanExtra(ListNotesActivity.isInEditMode, true);
+		alertBox = (CheckBox)findViewById(R.id.alertBox);
+		monthSpinner = (Spinner)findViewById(R.id.monthSpinner);
+		daySpinner =(Spinner)findViewById(R.id.daySpinner);
 		
-		System.out.println("userID: "+ userId);
+		ArrayAdapter monthAdapter = ArrayAdapter.createFromResource(this, R.array.month_array,android.R.layout.simple_spinner_item );
+		monthSpinner.setAdapter(monthAdapter);
+		monthSpinner.setOnItemSelectedListener(this);
+		monthSpinner.setVisibility(View.GONE);
 		
+		ArrayAdapter dayAdapter = ArrayAdapter.createFromResource(this, R.array.day_array,android.R.layout.simple_spinner_item );
+		daySpinner.setAdapter(dayAdapter);
+		daySpinner.setOnItemSelectedListener(this);
+		daySpinner.setVisibility(View.GONE);
 		
-		if (isInEditMode)
-		{
-			taskId = (String) bundle.getSerializable ("positionTracker");
-			System.out.println("noteID: "+ taskId);
-			load();
-		}
-		// cancel method to cancel a new note
-		cancelButton.setOnClickListener(new OnClickListener() {
+		alertBox.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				finish();
+				
+				monthSpinner.setVisibility(View.VISIBLE);
+				daySpinner.setVisibility(View.VISIBLE);
+				
 				
 			}
 		});
 		
-		// save method to save a new note
-		
-        saveButton.setOnClickListener(new OnClickListener() {
-			// when the save button is clicked we want to check to see if were "editing" the note
-        	// or if it is a brand new note 
-        	
-			@Override
-			public void onClick(View v) {
-				System.out.println("Inside click");
-				if(!isInEditMode)
-				{
-					System.out.println("Add mode");
-					helper.insertNote(titleEditText.getText().toString(), taskEditText.getText().toString(), 
-									Calendar.getInstance().getTime().toString(), Integer.parseInt(userId));	
-					finish();
-				}
-				else
-				{
-					// update method
-					System.out.println("Edit mode");
-					helper.updateNote(titleEditText.getText().toString(), taskEditText.getText().toString(), Integer.parseInt(taskId));
-					finish();
-				}
-
-			}
-		});
-	}
-	
-	 @Override
-		public boolean onOptionsItemSelected(MenuItem item) {
-			
-	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	    	builder.setMessage(R.string.confirmMsg);
-	    	builder.setTitle("Confirm Delete");
-	    	builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {				
-					
-					
-					
-					finish();
-				}
-			} );
-	    	
-	    	builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					
-					
-				}
-			});
-	    	
-	    	builder.create().show();
-	    	return true;
 		}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.delete_note_from_menu, menu);
-        if(isAddingNote)
-        {
-        	menu.removeItem(R.id.deleteNote);
-        }
-        return true;
+		
+		getMenuInflater().inflate(R.menu.list_tasks, menu);
+		return true;
+      
 	}
 
-	private void load() {
-    	Bundle bundle = this.getIntent().getExtras();
-		taskId = (String) bundle.getSerializable("positionTracker");
-		Cursor c = helper.getNoteByNoteId(taskId, userId);
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View view, int arg2,
+			long arg3) {
+	
+		if(monthSpinner.getId() == R.id.monthSpinner)
+		{
 		
-
-		System.out.println("Edit mode");
+		TextView textFieldSelected = (TextView) view ;
+		Toast.makeText(this, "You Selected " + textFieldSelected.getText(), Toast.LENGTH_LONG).show();
+				
+			
+		}
 		
-
-		c.moveToFirst();
+		if(daySpinner.getId() == R.id.daySpinner)
+		{
 		
-		titleEditText.setText(helper.getNotename(c));
-		taskEditText.setText(helper.getNotedescription(c));
-		dateTextView.setText(helper.getCreatedat(c));
-		
-		c.close();
+		TextView textFieldSelected = (TextView) view ;
+		Toast.makeText(this, "You Selected " + textFieldSelected.getText(), Toast.LENGTH_LONG).show();
+		}
 	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		
+		
+	}
+
+
 }

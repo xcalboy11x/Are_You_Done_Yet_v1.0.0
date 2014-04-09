@@ -2,6 +2,7 @@ package com.techbearcave.AYDY;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -30,14 +31,28 @@ CalendarView calendar;
        
 		calendar.setOnDateChangeListener(new OnDateChangeListener() {
 			
+			private Cursor model;
+			private SQLiteHelper helper;
+			String hi = helper.getCreatedat(model);
+			
+			
 		@Override
 		public void onSelectedDayChange(CalendarView view, int year, int month,
-				int dayOfMonth) {
+				int dayOfMonth) {;
 			// TODO Auto-generated method stub
 			month++; // month fix, gives february when click on march so I added + 1
 			Toast.makeText(getBaseContext(),"Selected Date is\n\n"
 				+month+" : "+dayOfMonth+" : "+year ,
 				Toast.LENGTH_LONG).show();
+
+			Intent taskView = new Intent(NavigationMenu.this, ListTasksActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putSerializable("day", dayOfMonth);
+			bundle.putSerializable("month", month);
+			bundle.putSerializable("year", year);
+			taskView.putExtras(bundle);
+			startActivity(taskView);
+			
 		}
 	});
     

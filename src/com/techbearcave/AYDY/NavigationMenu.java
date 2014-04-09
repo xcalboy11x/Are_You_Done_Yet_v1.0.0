@@ -73,9 +73,10 @@ CalendarView calendar;
 			
 			@Override
 			public void onClick(View v) {
-				
-				Intent launchNotes = new Intent(NavigationMenu.this, ListTasksActivity.class);
-				startActivity(launchNotes);
+				String userId = getIntent().getStringExtra(LogInPage.ID_EXTRA);
+				Intent launchTask = new Intent(NavigationMenu.this, ListTasksActivity.class);
+				launchTask.putExtra(ID_EXTRA, userId);
+				startActivity(launchTask);
 				
 			}
 		});

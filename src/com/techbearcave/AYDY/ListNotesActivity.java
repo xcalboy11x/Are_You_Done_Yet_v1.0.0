@@ -24,17 +24,15 @@ import com.techbearcave.notetaker.R;
 public class ListNotesActivity extends Activity {
 	
 	private ListView notesListView;
-	private int editingNoteId = -1; 
 	private Cursor model;
 	private SQLiteHelper helper;
 	private NoteAdapter adapter;
 	private String userId;
-	public static String ID_EXTRA = "";
-	public static String ID_EDIT = "";
-	public static String ID_NOTE = "";
+	//public static String ID_EXTRA = "";
+	//public static String ID_EDIT = "";
+	//public static String ID_NOTE = "";
 	public static String isInEditMode;
 	private TextView noteName = null;
-	private View row = null;
 
 	
 	
@@ -56,9 +54,9 @@ public class ListNotesActivity extends Activity {
 		
 		c.close();
 		
-		notesListView.setAdapter(adapter);
-		adapter.notifyDataSetChanged(); //this is suppose to notify adapter of changes and redraw listview
 		
+		//this is suppose to notify adapter of changes and redraw listview
+		adapter.notifyDataSetChanged(); 
 		
 		// 1. Find the position in ListView
 		// 2. Find NoteID in Listview

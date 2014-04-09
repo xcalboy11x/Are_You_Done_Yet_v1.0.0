@@ -155,7 +155,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	}
 	
 	public Cursor getTasks () {
-		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Userfk FROM notes ORDER BY name", null));
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Userfk FROM tasks ORDER BY name", null));
 	}
 	
 	public void updateTask(String taskName, String taskDescription, int id){
@@ -167,25 +167,25 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	}
 	
 	public Cursor getTaskById (String id) {
-		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Alertdate, Userfk FROM notes WHERE _id="+ id, null));
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Alertdate, Userfk FROM tasks WHERE _id="+ id, null));
 	}
 	
 	public Cursor getTaskID (String task_id){
-		return (getReadableDatabase().rawQuery("SELECT _id FROM notes WHERE _id ='"+task_id+"'", null));
+		return (getReadableDatabase().rawQuery("SELECT _id FROM tasks WHERE _id ='"+task_id+"'", null));
 	}
 	
 	public Cursor getTasksById (String id) {
-		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Userfk FROM notes " +
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Userfk FROM tasks " +
 				"WHERE Userfk ='"+ id +"'", null));
 	}
 	
 	public Cursor getTaskByTaskId (String taskId, String id) {
-		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Taskdescription, Created_at, Alertdate, Userfk FROM notes " +
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Taskdescription, Created_at, Alertdate, Userfk FROM tasks " +
 				"WHERE _id ='"+ taskId + "' AND Userfk = '" + id + "'", null));
 	}
 	
 	public void deleteTask (String taskId){
-		Log.d("Deleting Note Id: ", taskId + "");
+		Log.d("Deleting Task Id: ", taskId + "");
 		getWritableDatabase().delete(TABLE_TASK, "_id" + "='" + taskId+ "'", null);
 	}
 	

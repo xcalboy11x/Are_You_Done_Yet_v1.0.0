@@ -47,7 +47,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             + TASK_NAME + " TEXT, "
     		+ TASK + " TEXT, " 
     		+ KEY_CREATED_AT + " DATETIME, "
-    		+ "Day TEXT, Month, TEXT, Year, TEXT, "
+    		+ "Day TEXT, Month TEXT, Year, TEXT, "
     		+ ALERT_TASK + " TEXT, "
             + FOREIGN_KEY + " INTEGER, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
             + TABLE_USER + "(" + USER_ID + "));";
@@ -109,7 +109,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		cv.put("Password", password);
 		cv.put("Email", email);			
 		try{
-			getWritableDatabase().insertOrThrow("users", "Fname", cv);
+			getWritableDatabase().insertOrThrow("users", "Username", cv);
 		}
 		catch (Exception e) {
 			return false;

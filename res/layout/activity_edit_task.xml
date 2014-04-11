@@ -34,7 +34,7 @@
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <EditText
-                    android:id="@+id/titleEditText"
+                    android:id="@+id/taskTitleEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text" />
@@ -46,7 +46,7 @@
                 android:layout_weight="1" >
 
                 <TextView
-                    android:id="@+id/passwordText"
+                    android:id="@+id/taskDateText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/date"
@@ -124,7 +124,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
-            android:id="@+id/noteEditText"
+            android:id="@+id/taskEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -132,7 +132,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/taskSaveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -141,12 +141,12 @@
         android:text="@string/save" />
 
     <Button
-        android:id="@+id/cancelButton"
+        android:id="@+id/taskCancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="136dp"
-        android:layout_toLeftOf="@+id/saveButton"
+        android:layout_toLeftOf="@+id/taskSaveButton"
         android:text="@string/cancel" />
 
 </RelativeLayout>

@@ -31,9 +31,9 @@ CalendarView calendar;
        
 		calendar.setOnDateChangeListener(new OnDateChangeListener() {
 			
-			private Cursor model;
-			private SQLiteHelper helper;
-			String hi = helper.getCreatedat(model);
+			//private Cursor model;
+			//private SQLiteHelper helper;
+			//String hi = helper.getCreatedat(model);
 			
 			
 		@Override

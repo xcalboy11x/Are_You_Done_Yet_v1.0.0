@@ -2,7 +2,10 @@ package com.techbearcave.AYDY;
 
 
 
+import java.util.Calendar;
+
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -12,6 +15,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,14 +32,24 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	private Spinner minuteSpinner;
 	private Spinner periodSpinner;
 	private Button setAlertButton;
+	private Button saveButton;
+	private Button cancelButton;
+	private EditText taskTitleEditText;
+	private EditText taskEditText;
+	private TextView taskDateText;
 	private boolean checkAlertBox = false;
+	private SQLiteHelper helper;
+	
+	private String userId;
+	private String taskId;
+	private boolean isInEditMode = true ; 
 	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_task);
-		
+
 		// set ID's for spinner & checkbox
 		alertBox = (CheckBox)findViewById(R.id.alertBox);
 		monthSpinner = (Spinner)findViewById(R.id.monthSpinner);
@@ -44,41 +58,58 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		minuteSpinner =(Spinner)findViewById(R.id.minuteSpinner);
 		periodSpinner =(Spinner)findViewById(R.id.periodSpinner);
 		setAlertButton = (Button)findViewById(R.id.setAlertButton);
+		saveButton = (Button)findViewById(R.id.taskSaveButton);
+		cancelButton = (Button)findViewById(R.id.taskCancelButton);
+		taskTitleEditText = (EditText)findViewById(R.id.taskTitleEditText);
+		taskEditText = (EditText)findViewById(R.id.taskEditText);
+		taskDateText = (TextView)findViewById(R.id.taskDateText);
 		
+		helper = new SQLiteHelper(this);
+		Bundle bundle = this.getIntent().getExtras();
+		userId = (String) bundle.getSerializable ("stringToPassOn");
+		isInEditMode = getIntent().getBooleanExtra(ListTasksActivity.isInEditMode, true);
+		
+		if (isInEditMode)
+		{
+			taskId = (String) bundle.getSerializable ("positionTracker");
+			System.out.println("taskID: "+ taskId);
+			load();
+		}
+
 		//set the display adapters for spinners & button
 		ArrayAdapter monthAdapter = ArrayAdapter.createFromResource(this, R.array.month_array,android.R.layout.simple_spinner_item );
 		monthSpinner.setAdapter(monthAdapter);
 		monthSpinner.setOnItemSelectedListener(this);
 		monthSpinner.setVisibility(View.GONE);
-		
+
 		ArrayAdapter dayAdapter = ArrayAdapter.createFromResource(this, R.array.days_31_array,android.R.layout.simple_spinner_item );
 		daySpinner.setAdapter(dayAdapter);
 		daySpinner.setOnItemSelectedListener(this);
 		daySpinner.setVisibility(View.GONE);
-		
+
 		ArrayAdapter hourAdapter = ArrayAdapter.createFromResource(this, R.array.hour_array,android.R.layout.simple_spinner_item );
 		hourSpinner.setAdapter(hourAdapter);
 		hourSpinner.setOnItemSelectedListener(this);
 		hourSpinner.setVisibility(View.GONE);
-		
+
 		ArrayAdapter minuteAdapter = ArrayAdapter.createFromResource(this, R.array.minute_array,android.R.layout.simple_spinner_item );
 		minuteSpinner.setAdapter(minuteAdapter);
 		minuteSpinner.setOnItemSelectedListener(this);
 		minuteSpinner.setVisibility(View.GONE);
-		
+
 		ArrayAdapter periodAdapter = ArrayAdapter.createFromResource(this, R.array.period_array,android.R.layout.simple_spinner_item );
 		periodSpinner.setAdapter(periodAdapter);
 		periodSpinner.setOnItemSelectedListener(this);
 		periodSpinner.setVisibility(View.GONE);
-		
+
 		setAlertButton.setVisibility(View.GONE);
-		
+
 		//When notification checkbox is clicked due the following code - set spinners to view for data input
 		alertBox.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				
+
 				checkAlertBox = true;
 				monthSpinner.setVisibility(View.VISIBLE);
 				daySpinner.setVisibility(View.VISIBLE);
@@ -86,16 +117,16 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 				minuteSpinner.setVisibility(View.VISIBLE);
 				periodSpinner.setVisibility(View.VISIBLE);
 				setAlertButton.setVisibility(View.VISIBLE);
-				
+
 			}
 		});
-		
+
 		setAlertButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// send alert data to db
-				
+
 				monthSpinner.setVisibility(View.GONE);
 				daySpinner.setVisibility(View.GONE);
 				hourSpinner.setVisibility(View.GONE);
@@ -103,12 +134,49 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 				periodSpinner.setVisibility(View.GONE);
 				setAlertButton.setVisibility(View.GONE);
 				alertBox.setChecked(false);
-				
+
 			}
 		});
-		
-		
-		}
+
+		saveButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				int alertCheck;
+				if(!isInEditMode)
+				{
+					System.out.println("Add mode");
+					if (checkAlertBox)
+						alertCheck = 1;
+					else
+						alertCheck = 0;
+					helper.insertTask(taskTitleEditText.getText().toString(), taskEditText.getText().toString(), 
+									Calendar.getInstance().getTime().toString(), daySpinner.getSelectedItem().toString(),
+									monthSpinner.getSelectedItem().toString(), alertCheck, Integer.parseInt(userId));	
+					finish();
+				}
+				else
+				{
+					// update method
+					System.out.println("Edit mode");
+					helper.updateTask(taskTitleEditText.getText().toString(), taskEditText.getText().toString(),
+							Integer.parseInt(userId));
+					finish();
+				}
+			}
+		});
+
+		// cancel method to cancel a new note
+		cancelButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
+
+			}
+		});
+
+	}
 
 	
 	@Override
@@ -169,6 +237,24 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	public void onNothingSelected(AdapterView<?> arg0) {
 		
 		
+	}
+	
+	private void load() {
+    	Bundle bundle = this.getIntent().getExtras();
+		taskId = (String) bundle.getSerializable("positionTracker");
+		Cursor c = helper.getTaskByTaskId(taskId, userId);
+		
+
+		System.out.println("Edit mode");
+		
+
+		c.moveToFirst();
+		
+		taskTitleEditText.setText(helper.getTaskname(c));
+		taskEditText.setText(helper.getTaskdescription(c));
+		taskDateText.setText(helper.getTaskCreatedat(c));
+		
+		c.close();
 	}
 	
 

@@ -33,7 +33,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     private static final String NOTE_NAME = "Notename";
     private static final String NOTE_DESCRIPTION = "Notedescription";
     private static final String ALERT_DATE = "Alertdate";
-    private static final String ALERT_TASK = "Alerttask";
+    private static final String TASK_HAS_ALERT = "Taskhasalert";
   
     
     // Users table create statement
@@ -47,8 +47,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             + TASK_NAME + " TEXT, "
     		+ TASK + " TEXT, " 
     		+ KEY_CREATED_AT + " DATETIME, "
-    		+ "Day TEXT, Month TEXT, Year, TEXT, "
-    		+ ALERT_TASK + " TEXT, "
+    		+ "Day TEXT, Month TEXT, "
+    		+ TASK_HAS_ALERT + " INTEGER, "
             + FOREIGN_KEY + " INTEGER, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
             + TABLE_USER + "(" + USER_ID + "));";
  
@@ -137,7 +137,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	 * ===============================================
 	*/
 	
-	public boolean insertTask(String taskName, String task, String date, String day, String month, String year, String alertTask, String userId) {
+	public boolean insertTask(String taskName, String task, String date, String day, String month, int taskhasalert, int userId) {
 		ContentValues cv = new ContentValues();
 		
 		cv.put("Taskname", taskName);
@@ -145,8 +145,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		cv.put("Created_at", date);
 		cv.put("Day", day);
 		cv.put("Month", month);
-		cv.put("Year", year);
-		cv.put("Alerttask", alertTask);
+		cv.put("Taskhasalert", taskhasalert);
 		cv.put("Userfk", userId);
 
 		try{
@@ -159,7 +158,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	}
 	
 	public Cursor getTasks () {
-		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Userfk FROM tasks ORDER BY name", null));
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Day, Month, Userfk FROM tasks ORDER BY name", null));
 	}
 	
 	public void updateTask(String taskName, String taskDescription, int id){
@@ -167,7 +166,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		
 		cv.put("Taskname", taskName);
 		cv.put("Task", taskDescription);
-		getWritableDatabase().update("notes", cv, "_id ='" + id + "'", null);
+		getWritableDatabase().update("tasks", cv, "_id ='" + id + "'", null);
 	}
 	
 	
@@ -178,13 +177,13 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	}
 	
 	public Cursor getTasksById (String id) {
-		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Userfk FROM tasks " +
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Day, Month, Alertdate, Userfk FROM tasks " +
 
 				"WHERE Userfk ='"+ id +"'", null));
 	}
 	
 	public Cursor getTaskByTaskId (String taskId, String id) {
-		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Taskdescription, Created_at, Alertdate, Userfk FROM tasks " +
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Taskdescription, Created_at, Day, Month, Alertdate, Userfk FROM tasks " +
 
 				"WHERE _id ='"+ taskId + "' AND Userfk = '" + id + "'", null));
 	}
@@ -208,6 +207,10 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	
 	public String getTaskdescription (Cursor c) {
 		return (c.getString(2));
+	}
+	
+	public String getTaskCreatedat (Cursor c) {
+		return (c.getString(3));
 	}
 	
 	

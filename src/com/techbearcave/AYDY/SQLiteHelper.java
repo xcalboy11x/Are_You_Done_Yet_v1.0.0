@@ -177,13 +177,13 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	}
 	
 	public Cursor getTasksById (String id) {
-		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Day, Month, Alertdate, Userfk FROM tasks " +
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Day, Month, Taskhasalert, Userfk FROM tasks " +
 
 				"WHERE Userfk ='"+ id +"'", null));
 	}
 	
 	public Cursor getTaskByTaskId (String taskId, String id) {
-		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Taskdescription, Created_at, Day, Month, Alertdate, Userfk FROM tasks " +
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Day, Month, Taskhasalert, Userfk FROM tasks " +
 
 				"WHERE _id ='"+ taskId + "' AND Userfk = '" + id + "'", null));
 	}

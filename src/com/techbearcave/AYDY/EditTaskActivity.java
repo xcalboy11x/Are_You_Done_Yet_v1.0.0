@@ -22,13 +22,13 @@ import com.techbearcave.notetaker.R;
 public class EditTaskActivity extends Activity implements OnItemSelectedListener {
 	
 	private CheckBox alertBox;
-	private Spinner month31Spinner;
+	private Spinner monthSpinner;
 	private Spinner daySpinner;
 	private Spinner hourSpinner;
 	private Spinner minuteSpinner;
 	private Spinner periodSpinner;
 	private Button setAlertButton;
-	//private boolean checkAlertBox;
+	private boolean checkAlertBox = false;
 	
 
 	@Override
@@ -38,7 +38,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		
 		// set ID's for spinner & checkbox
 		alertBox = (CheckBox)findViewById(R.id.alertBox);
-		month31Spinner = (Spinner)findViewById(R.id.monthSpinner);
+		monthSpinner = (Spinner)findViewById(R.id.monthSpinner);
 		daySpinner =(Spinner)findViewById(R.id.daySpinner);
 		hourSpinner =(Spinner)findViewById(R.id.hourSpinner);
 		minuteSpinner =(Spinner)findViewById(R.id.minuteSpinner);
@@ -46,12 +46,12 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		setAlertButton = (Button)findViewById(R.id.setAlertButton);
 		
 		//set the display adapters for spinners & button
-		ArrayAdapter monthAdapter = ArrayAdapter.createFromResource(this, R.array.month_31_array,android.R.layout.simple_spinner_item );
-		month31Spinner.setAdapter(monthAdapter);
-		month31Spinner.setOnItemSelectedListener(this);
-		month31Spinner.setVisibility(View.GONE);
+		ArrayAdapter monthAdapter = ArrayAdapter.createFromResource(this, R.array.month_array,android.R.layout.simple_spinner_item );
+		monthSpinner.setAdapter(monthAdapter);
+		monthSpinner.setOnItemSelectedListener(this);
+		monthSpinner.setVisibility(View.GONE);
 		
-		ArrayAdapter dayAdapter = ArrayAdapter.createFromResource(this, R.array.day_array,android.R.layout.simple_spinner_item );
+		ArrayAdapter dayAdapter = ArrayAdapter.createFromResource(this, R.array.days_31_array,android.R.layout.simple_spinner_item );
 		daySpinner.setAdapter(dayAdapter);
 		daySpinner.setOnItemSelectedListener(this);
 		daySpinner.setVisibility(View.GONE);
@@ -79,7 +79,8 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 			@Override
 			public void onClick(View v) {
 				
-				month31Spinner.setVisibility(View.VISIBLE);
+				checkAlertBox = true;
+				monthSpinner.setVisibility(View.VISIBLE);
 				daySpinner.setVisibility(View.VISIBLE);
 				hourSpinner.setVisibility(View.VISIBLE);
 				minuteSpinner.setVisibility(View.VISIBLE);
@@ -95,7 +96,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 			public void onClick(View v) {
 				// send alert data to db
 				
-				month31Spinner.setVisibility(View.GONE);
+				monthSpinner.setVisibility(View.GONE);
 				daySpinner.setVisibility(View.GONE);
 				hourSpinner.setVisibility(View.GONE);
 				minuteSpinner.setVisibility(View.GONE);
@@ -123,7 +124,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	public void onItemSelected(AdapterView<?> arg0, View view, int arg2,
 			long arg3) {
 	
-		if(month31Spinner.getId() == R.id.monthSpinner)
+		if(monthSpinner.getId() == R.id.monthSpinner)
 		{
 		
 		TextView textFieldSelected = (TextView) view ;
@@ -143,24 +144,24 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		if(hourSpinner.getId() == R.id.hourSpinner)
 		{
 		
-		TextView textFieldSelected = (TextView) view ;
-		Toast.makeText(this, "You Selected " + textFieldSelected.getText(), Toast.LENGTH_LONG).show();
+		//TextView textFieldSelected = (TextView) view ;
+		//Toast.makeText(this, "You Selected " + textFieldSelected.getText(), Toast.LENGTH_LONG).show();
 		
 		}
 		
 		if(minuteSpinner.getId() == R.id.minuteSpinner)
 		{
 		
-		TextView textFieldSelected = (TextView) view ;
-		Toast.makeText(this, "You Selected " + textFieldSelected.getText(), Toast.LENGTH_LONG).show();
+		//TextView textFieldSelected = (TextView) view ;
+		//Toast.makeText(this, "You Selected " + textFieldSelected.getText(), Toast.LENGTH_LONG).show();
 		
 		}
 		
 		if(periodSpinner.getId() == R.id.periodSpinner)
 		{
 		
-		TextView textFieldSelected = (TextView) view ;
-		Toast.makeText(this, "You Selected " + textFieldSelected.getText(), Toast.LENGTH_LONG).show();
+		//TextView textFieldSelected = (TextView) view ;
+		//Toast.makeText(this, "You Selected " + textFieldSelected.getText(), Toast.LENGTH_LONG).show();
 		}
 	}
 

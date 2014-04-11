@@ -31,7 +31,6 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	private Spinner hourSpinner;
 	private Spinner minuteSpinner;
 	private Spinner periodSpinner;
-	private Button setAlertButton;
 	private Button saveButton;
 	private Button cancelButton;
 	private EditText taskTitleEditText;
@@ -57,7 +56,6 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		hourSpinner =(Spinner)findViewById(R.id.hourSpinner);
 		minuteSpinner =(Spinner)findViewById(R.id.minuteSpinner);
 		periodSpinner =(Spinner)findViewById(R.id.periodSpinner);
-		setAlertButton = (Button)findViewById(R.id.setAlertButton);
 		saveButton = (Button)findViewById(R.id.taskSaveButton);
 		cancelButton = (Button)findViewById(R.id.taskCancelButton);
 		taskTitleEditText = (EditText)findViewById(R.id.taskTitleEditText);
@@ -80,12 +78,12 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		ArrayAdapter monthAdapter = ArrayAdapter.createFromResource(this, R.array.month_array,android.R.layout.simple_spinner_item );
 		monthSpinner.setAdapter(monthAdapter);
 		monthSpinner.setOnItemSelectedListener(this);
-		monthSpinner.setVisibility(View.GONE);
+		
 
 		ArrayAdapter dayAdapter = ArrayAdapter.createFromResource(this, R.array.days_31_array,android.R.layout.simple_spinner_item );
 		daySpinner.setAdapter(dayAdapter);
 		daySpinner.setOnItemSelectedListener(this);
-		daySpinner.setVisibility(View.GONE);
+		
 
 		ArrayAdapter hourAdapter = ArrayAdapter.createFromResource(this, R.array.hour_array,android.R.layout.simple_spinner_item );
 		hourSpinner.setAdapter(hourAdapter);
@@ -102,7 +100,6 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		periodSpinner.setOnItemSelectedListener(this);
 		periodSpinner.setVisibility(View.GONE);
 
-		setAlertButton.setVisibility(View.GONE);
 
 		//When notification checkbox is clicked due the following code - set spinners to view for data input
 		alertBox.setOnClickListener(new OnClickListener() {
@@ -111,32 +108,15 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 			public void onClick(View v) {
 
 				checkAlertBox = true;
-				monthSpinner.setVisibility(View.VISIBLE);
-				daySpinner.setVisibility(View.VISIBLE);
+				
 				hourSpinner.setVisibility(View.VISIBLE);
 				minuteSpinner.setVisibility(View.VISIBLE);
 				periodSpinner.setVisibility(View.VISIBLE);
-				setAlertButton.setVisibility(View.VISIBLE);
 
 			}
 		});
 
-		setAlertButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// send alert data to db
-
-				monthSpinner.setVisibility(View.GONE);
-				daySpinner.setVisibility(View.GONE);
-				hourSpinner.setVisibility(View.GONE);
-				minuteSpinner.setVisibility(View.GONE);
-				periodSpinner.setVisibility(View.GONE);
-				setAlertButton.setVisibility(View.GONE);
-				alertBox.setChecked(false);
-
-			}
-		});
+		
 
 		saveButton.setOnClickListener(new OnClickListener() {
 
@@ -182,7 +162,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
-		getMenuInflater().inflate(R.menu.list_tasks, menu);
+		getMenuInflater().inflate(R.menu.delete_task_from_menu, menu);
 		return true;
       
 	}

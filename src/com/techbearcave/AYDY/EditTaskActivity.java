@@ -152,7 +152,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 						alertCheck = 0;
 					helper.insertTask(taskTitleEditText.getText().toString(), taskEditText.getText().toString(), 
 									Calendar.getInstance().getTime().toString(), daySpinner.getSelectedItem().toString(),
-									monthSpinner.getSelectedItem().toString(), alertCheck, Integer.parseInt(userId));	
+									monthSpinner.getSelectedItemPosition() + 1, alertCheck, Integer.parseInt(userId));	
 					finish();
 				}
 				else

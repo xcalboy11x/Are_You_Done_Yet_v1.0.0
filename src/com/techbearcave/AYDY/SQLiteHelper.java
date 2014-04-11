@@ -47,7 +47,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             + TASK_NAME + " TEXT, "
     		+ TASK + " TEXT, " 
     		+ KEY_CREATED_AT + " DATETIME, "
-    		+ "Day TEXT, Month TEXT, "
+    		+ "Day INTEGER, Month INTEGER, "
     		+ TASK_HAS_ALERT + " INTEGER, "
             + FOREIGN_KEY + " INTEGER, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
             + TABLE_USER + "(" + USER_ID + "));";
@@ -137,7 +137,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	 * ===============================================
 	*/
 	
-	public boolean insertTask(String taskName, String task, String date, String day, String month, int taskhasalert, int userId) {
+	public boolean insertTask(String taskName, String task, String date, String day, int month, int taskhasalert, int userId) {
 		ContentValues cv = new ContentValues();
 		
 		cv.put("Taskname", taskName);
@@ -169,23 +169,23 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		getWritableDatabase().update("tasks", cv, "_id ='" + id + "'", null);
 	}
 	
-	
-
-	
 	public Cursor getTaskID (String task_id){
 		return (getReadableDatabase().rawQuery("SELECT _id FROM tasks WHERE _id ='"+task_id+"'", null));
 	}
 	
 	public Cursor getTasksById (String id) {
 		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Day, Month, Taskhasalert, Userfk FROM tasks " +
-
 				"WHERE Userfk ='"+ id +"'", null));
 	}
 	
 	public Cursor getTaskByTaskId (String taskId, String id) {
 		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Day, Month, Taskhasalert, Userfk FROM tasks " +
-
 				"WHERE _id ='"+ taskId + "' AND Userfk = '" + id + "'", null));
+	}
+	
+	public Cursor getTasksByDay(String day, String month, String id) {
+		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Day, Month, Taskhasalert, Userfk FROM tasks " +
+				"WHERE Userfk ='" + id +"' AND Day ='"+ day +"' AND Month = '" + month + "'" , null));
 	}
 	
 	public void deleteTask (String taskId){

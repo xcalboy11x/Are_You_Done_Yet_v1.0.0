@@ -16,7 +16,8 @@ import com.techbearcave.notetaker.R;
 
 public class NavigationMenu extends Activity {
 	public static String ID_EXTRA = "._ID";
-CalendarView calendar;
+	CalendarView calendar;
+	public static String selectByDay;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,7 +46,11 @@ CalendarView calendar;
 				+month+" : "+dayOfMonth+" : "+year ,
 				Toast.LENGTH_LONG).show();
 
+			String userId = getIntent().getStringExtra(LogInPage.ID_EXTRA);
+	
 			Intent taskView = new Intent(NavigationMenu.this, ListTasksActivity.class);
+			taskView.putExtra(ID_EXTRA, userId);
+			taskView.putExtra(selectByDay, true);
 			Bundle bundle = new Bundle();
 			bundle.putSerializable("day", dayOfMonth);
 			bundle.putSerializable("month", month);

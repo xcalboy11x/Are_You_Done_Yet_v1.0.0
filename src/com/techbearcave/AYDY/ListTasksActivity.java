@@ -96,11 +96,21 @@ public class ListTasksActivity extends Activity {
 		tasksListView = (ListView)findViewById(R.id.tasksListView);
 		helper = new SQLiteHelper(this);
 		userId = getIntent().getStringExtra(NavigationMenu.ID_EXTRA);
+		Bundle bundle = this.getIntent().getExtras();
 
 //		generate context menu for long press - "Delete" note
 		registerForContextMenu(tasksListView);
 
-		model = helper.getTasksById(userId);
+		if (getIntent().getBooleanExtra(NavigationMenu.selectByDay, false))
+		{	
+			int day, month;
+			day = (Integer) bundle.getSerializable ("day");
+			month = (Integer) bundle.getSerializable ("month");
+			System.out.println("Inside Select by day : " + day + " " + month + " " + userId);
+			model = helper.getTasksByDay(Integer.toString(day), Integer.toString(month), userId);
+		}
+		else
+			model = helper.getTasksById(userId);
 		startManagingCursor(model);
 		adapter = new TaskAdapter(model);
 		tasksListView.setAdapter(adapter);

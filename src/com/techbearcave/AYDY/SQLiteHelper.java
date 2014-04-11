@@ -161,11 +161,14 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		return (getReadableDatabase().rawQuery("SELECT _id, Taskname, Task, Created_at, Day, Month, Userfk FROM tasks ORDER BY name", null));
 	}
 	
-	public void updateTask(String taskName, String taskDescription, int id){
+	public void updateTask(String taskName, String taskDescription, String day, String month, int hasAlert, int id){
 		ContentValues cv = new ContentValues();
 		
 		cv.put("Taskname", taskName);
 		cv.put("Task", taskDescription);
+		cv.put("Day", day);
+		cv.put("Month", month);
+		cv.put("Taskhasalert", hasAlert);
 		getWritableDatabase().update("tasks", cv, "_id ='" + id + "'", null);
 	}
 	
@@ -211,6 +214,18 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	
 	public String getTaskCreatedat (Cursor c) {
 		return (c.getString(3));
+	}
+	
+	public String getTaskDay (Cursor c) {
+		return (c.getString(4));
+	}
+	
+	public String getTaskMonth (Cursor c) {
+		return (c.getString(5));
+	}
+	
+	public String getTaskHasAlert (Cursor c) {
+		return (c.getString(6));
 	}
 	
 	

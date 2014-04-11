@@ -51,6 +51,7 @@ public class NavigationMenu extends Activity {
 			Intent taskView = new Intent(NavigationMenu.this, ListTasksActivity.class);
 			taskView.putExtra(ID_EXTRA, userId);
 			taskView.putExtra(selectByDay, true);
+
 			Bundle bundle = new Bundle();
 			bundle.putSerializable("day", dayOfMonth);
 			bundle.putSerializable("month", month);

@@ -258,5 +258,6 @@
             <item>AM</item>
             <item>PM</item>
         </string-array>
-            <string name="setAlertButton">Set Alert</string>
+            <string name="deleteTaskButton">Delete Task</string>
+            
 </resources>

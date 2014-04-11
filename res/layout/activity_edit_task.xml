@@ -109,13 +109,6 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/setAlertButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/setAlertButton" />
-
         <TextView
             android:id="@+id/taskTitle"
             android:layout_width="wrap_content"

@@ -57,7 +57,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		hourSpinner =(Spinner)findViewById(R.id.hourSpinner);
 		minuteSpinner =(Spinner)findViewById(R.id.minuteSpinner);
 		periodSpinner =(Spinner)findViewById(R.id.periodSpinner);
-		setAlertButton = (Button)findViewById(R.id.setAlertButton);
+
 		saveButton = (Button)findViewById(R.id.taskSaveButton);
 		cancelButton = (Button)findViewById(R.id.taskCancelButton);
 		taskTitleEditText = (EditText)findViewById(R.id.taskTitleEditText);
@@ -102,7 +102,6 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		periodSpinner.setOnItemSelectedListener(this);
 		periodSpinner.setVisibility(View.GONE);
 
-		setAlertButton.setVisibility(View.GONE);
 
 		//When notification checkbox is clicked due the following code - set spinners to view for data input
 		alertBox.setOnClickListener(new OnClickListener() {
@@ -111,13 +110,10 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 			public void onClick(View v) {
 
 				checkAlertBox = true;
-				monthSpinner.setVisibility(View.VISIBLE);
-				daySpinner.setVisibility(View.VISIBLE);
+				
 				hourSpinner.setVisibility(View.VISIBLE);
 				minuteSpinner.setVisibility(View.VISIBLE);
 				periodSpinner.setVisibility(View.VISIBLE);
-				setAlertButton.setVisibility(View.VISIBLE);
-
 			}
 		});
 
@@ -137,7 +133,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 
 			}
 		});
-
+		
 		saveButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -176,13 +172,23 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 			}
 		});
 
+		// cancel method to cancel a new note
+		cancelButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
+
+			}
+		});
+
 	}
 
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
-		getMenuInflater().inflate(R.menu.list_tasks, menu);
+		getMenuInflater().inflate(R.menu.delete_task_from_menu, menu);
 		return true;
       
 	}

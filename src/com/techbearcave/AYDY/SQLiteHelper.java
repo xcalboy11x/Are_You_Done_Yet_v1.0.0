@@ -137,7 +137,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	 * ===============================================
 	*/
 	
-	public boolean insertTask(String taskName, String task, String date, String day, int month, int taskhasalert, int userId) {
+	public boolean insertTask(String taskName, String task, String date, String day, String month, int taskhasalert, int userId) {
 		ContentValues cv = new ContentValues();
 		
 		cv.put("Taskname", taskName);

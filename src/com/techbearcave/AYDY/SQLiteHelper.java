@@ -288,7 +288,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		cv.put("Taskfk", taskId);
 
 		try{
-			getWritableDatabase().insertOrThrow("notes", "Notename", cv);
+			getWritableDatabase().insertOrThrow("alerts", "Alertdate", cv);
 		}
 		catch (Exception e) {
 			return false;

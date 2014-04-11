@@ -65,11 +65,17 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     private static final String CREATE_TABLE_ALERT = "CREATE TABLE " + TABLE_ALERT 
     		+ "(" + ALERT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
     		+ ALERT_DATE + " TEXT, "
-            + KEY_CREATED_AT + " DATETIME," 
-    		+ FOREIGN_KEY + " INTEGER, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
-    		+ TABLE_USER + "(" + USER_ID + "));"
-    		+ TASK_KEY + " INTEGER, FOREIGN KEY (" + TASK_KEY + ") REFERENCES "
-    		+ TABLE_TASK + "(" + TASK_ID + "));";
+            + KEY_CREATED_AT + " DATETIME, " 
+    		+ FOREIGN_KEY + " INTEGER, "
+    		+ TASK_KEY + " INTEGER, "
+    		+ "Dayfk INTEGER, Monthfk INTEGER, "
+            + "FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
+    		+ TABLE_USER + "(" + USER_ID + "), " 
+            + "FOREIGN KEY (" + TASK_KEY + ") REFERENCES "
+    		+ TABLE_USER + "(" + TASK_ID + "), "
+    		+ "FOREIGN KEY (Dayfk) REFERENCES " + TABLE_ALERT +"(Day), "
+    		+ "FOREIGN KEY (Monthfk) REFERENCES " + TABLE_ALERT +"(Month));";
+
 	
 	public SQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, SCHEMA_VERSION);

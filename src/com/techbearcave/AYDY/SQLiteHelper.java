@@ -46,7 +46,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             + "(" + TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
             + TASK_NAME + " TEXT, "
     		+ TASK + " TEXT, " 
-    		+ KEY_CREATED_AT + " DATETIME, " 
+    		+ KEY_CREATED_AT + " DATETIME, "
+    		+ "Day TEXT, Month, TEXT, Year, TEXT, "
     		+ ALERT_TASK + " TEXT, "
             + FOREIGN_KEY + " INTEGER, FOREIGN KEY (" + FOREIGN_KEY + ") REFERENCES "
             + TABLE_USER + "(" + USER_ID + "));";
@@ -136,12 +137,15 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	 * ===============================================
 	*/
 	
-	public boolean insertTask(String taskName, String task, String date, String alertTask, String userId) {
+	public boolean insertTask(String taskName, String task, String date, String day, String month, String year, String alertTask, String userId) {
 		ContentValues cv = new ContentValues();
 		
 		cv.put("Taskname", taskName);
 		cv.put("Task", task);
 		cv.put("Created_at", date);
+		cv.put("Day", day);
+		cv.put("Month", month);
+		cv.put("Year", year);
 		cv.put("Alerttask", alertTask);
 		cv.put("Userfk", userId);
 

@@ -32,7 +32,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     private static final String TASK_NAME = "Taskname";
     private static final String NOTE_NAME = "Notename";
     private static final String NOTE_DESCRIPTION = "Notedescription";
-    private static final String ALERT_DATE = "Alertdate";
+    private static final String ALERT_HOUR = "Alerthour";
+    private static final String ALERT_MINUTE = "Alertminute";    
     private static final String TASK_HAS_ALERT = "Taskhasalert";
   
     
@@ -64,7 +65,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
  // Alerts table create statement
     private static final String CREATE_TABLE_ALERT = "CREATE TABLE " + TABLE_ALERT 
     		+ "(" + ALERT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
-    		+ ALERT_DATE + " TEXT, "
+    		+ ALERT_MINUTE + " INTEGER, "
+    		+ ALERT_HOUR + " INTEGER, "
             + KEY_CREATED_AT + " DATETIME, " 
     		+ FOREIGN_KEY + " INTEGER, "
     		+ TASK_KEY + " INTEGER, "
@@ -304,19 +306,33 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	 * ===============================================
 	*/
 	
-	public boolean insertAlert(String alertDate,int userId, int taskId) {
+	public boolean insertAlert(String alertMinute, String alertHour, int userId, String taskId, String day, String month) {
 		ContentValues cv = new ContentValues();
 		
-		cv.put("Alertdate", alertDate);
+		cv.put("Alertminute", alertMinute);
+		cv.put("Alerthour", alertHour);
 		cv.put("Userfk", userId);
 		cv.put("Taskfk", taskId);
+		cv.put("Dayfk", day);
+		cv.put("Monthfk", month);
 
 		try{
-			getWritableDatabase().insertOrThrow("alerts", "Alertdate", cv);
+			getWritableDatabase().insertOrThrow("alerts", "Alertminute", cv);
 		}
 		catch (Exception e) {
 			return false;
 		}
 		return true;
+	}
+	
+	public void updateAlert(String alertMinute, String alertHour, String day, String month, int id){
+		ContentValues cv = new ContentValues();
+		
+		cv.put("Alertminute", alertMinute);
+		cv.put("Alerthour", alertHour);
+		cv.put("Dayfk", day);
+		cv.put("Monthfk", month);
+		
+		getWritableDatabase().update("alerts", cv, "_id ='" + id + "'", null);
 	}
 }

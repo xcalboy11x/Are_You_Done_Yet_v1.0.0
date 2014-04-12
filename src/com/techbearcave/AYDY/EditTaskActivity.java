@@ -142,6 +142,10 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 					helper.insertTask(taskTitleEditText.getText().toString(), taskEditText.getText().toString(), 
 							Calendar.getInstance().getTime().toString(), daySpinner.getSelectedItem().toString(),
 							Integer.toString(monthSpinner.getSelectedItemPosition() + 1), alertCheck, Integer.parseInt(userId));	
+					
+					if(alertBox.isChecked())
+						helper.insertAlert(minuteSpinner.getSelectedItem().toString(), hourSpinner.getSelectedItem().toString(),
+								Integer.parseInt(userId), taskId, daySpinner.getSelectedItem().toString(), monthSpinner.getSelectedItem().toString());
 					finish();
 				}
 				else
@@ -151,6 +155,10 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 					helper.updateTask(taskTitleEditText.getText().toString(), taskEditText.getText().toString(),
 							daySpinner.getSelectedItem().toString(), Integer.toString(monthSpinner.getSelectedItemPosition() + 1), 
 							alertCheck, Integer.parseInt(taskId));
+					if(alertBox.isChecked())
+						helper.updateAlert(minuteSpinner.getSelectedItem().toString(), hourSpinner.getSelectedItem().toString(), 
+								daySpinner.getSelectedItem().toString(), Integer.toString(monthSpinner.getSelectedItemPosition() + 1), 
+								Integer.parseInt(taskId));
 					finish();
 				}
 			}

@@ -205,8 +205,8 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		if(monthSpinner.getId() == R.id.monthSpinner)
 		{
 		
-		TextView textFieldSelected = (TextView) view ;
-		Toast.makeText(this, "You Selected " + textFieldSelected.getText(), Toast.LENGTH_LONG).show();
+		//TextView textFieldSelected = (TextView) view ;
+		//Toast.makeText(this, "You Selected " + textFieldSelected.getText(), Toast.LENGTH_LONG).show();
 			
 			
 		}
@@ -214,8 +214,8 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		if(daySpinner.getId() == R.id.daySpinner)
 		{
 		
-		TextView textFieldSelected = (TextView) view ;
-		Toast.makeText(this, "You Selected " + textFieldSelected.getText(), Toast.LENGTH_LONG).show();
+		//TextView textFieldSelected = (TextView) view ;
+		//Toast.makeText(this, "You Selected " + textFieldSelected.getText(), Toast.LENGTH_LONG).show();
 		
 		}
 		
@@ -284,20 +284,17 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	
 	public void createNotification (){
 		
-		Intent resultIntent = new Intent(this, ListTasksActivity.class);
-
-		PendingIntent resultPendingIntent =
-		    PendingIntent.getActivity(this,0,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-		
-		//Build the notification here
-		NotificationCompat.Builder notifyUser =
-			    new NotificationCompat.Builder(this)
-			    .setSmallIcon(R.drawable.ic_launcher)
-			    .setContentTitle("My notification")
-			    .setContentText("Hello World!");
-		
-	
-		 notifyUser.setContentIntent(resultPendingIntent);
+		final int NOTIF_ID = 1234;
+		 
+		 NotificationManager notifManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		 Notification task = new Notification(R.drawable.ic_launcher, "New Task!", System.currentTimeMillis());
+		 
+		 PendingIntent intent = PendingIntent.getActivity(this, 0, new Intent(this, ListTasksActivity.class), 0);
+		 
+		 task.setLatestEventInfo(this, "You have a new task to attend to", "Task - Finish the fucking project", intent);
+		 
+		 notifManager.notify(NOTIF_ID, task);
+		 //notifManager.cancel(NOTIF_ID);
 		
 
 	}

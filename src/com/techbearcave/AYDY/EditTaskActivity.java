@@ -5,8 +5,14 @@ package com.techbearcave.AYDY;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.Notification.Builder;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -144,9 +150,16 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 							Integer.toString(monthSpinner.getSelectedItemPosition() + 1), alertCheck, Integer.parseInt(userId));	
 					
 					if(alertBox.isChecked())
+					{
 						helper.insertAlert(minuteSpinner.getSelectedItem().toString(), hourSpinner.getSelectedItem().toString(),
 								Integer.parseInt(userId), taskId, daySpinner.getSelectedItem().toString(), monthSpinner.getSelectedItem().toString());
-					finish();
+								
+								createNotification();
+									
+									finish();
+								
+					}
+				
 				}
 				else
 				{
@@ -267,5 +280,25 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		}
 		
 		c.close();
+	}
+	
+	public void createNotification (){
+		
+		Intent resultIntent = new Intent(this, ListTasksActivity.class);
+
+		PendingIntent resultPendingIntent =
+		    PendingIntent.getActivity(this,0,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+		
+		//Build the notification here
+		NotificationCompat.Builder notifyUser =
+			    new NotificationCompat.Builder(this)
+			    .setSmallIcon(R.drawable.ic_launcher)
+			    .setContentTitle("My notification")
+			    .setContentText("Hello World!");
+		
+	
+		 notifyUser.setContentIntent(resultPendingIntent);
+		
+
 	}
 }

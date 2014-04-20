@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -32,7 +33,8 @@ public class ListTasksActivity extends Activity {
 	//public static String ID_EDIT = "";
 	//public static String ID_TASK = "";
 	public static String isInEditMode;
-
+	
+	
 	// Write the code here to delete the note from long press
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -93,6 +95,8 @@ public class ListTasksActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_tasks);
 
+		
+		
 		tasksListView = (ListView)findViewById(R.id.tasksListView);
 		helper = new SQLiteHelper(this);
 		userId = getIntent().getStringExtra(NavigationMenu.ID_EXTRA);
@@ -113,8 +117,19 @@ public class ListTasksActivity extends Activity {
 			model = helper.getTasksById(userId);
 		startManagingCursor(model);
 		adapter = new TaskAdapter(model);
+		
+		// trying to put code here to refresh List View for tasks; especially after notification is selected
+		
+		
 		tasksListView.setAdapter(adapter);
-
+		adapter.notifyDataSetChanged();
+		Log.i("Listview", "Adapter was just set");
+		//tasksListView.setVisibility(ListView.INVISIBLE);
+		//tasksListView.setVisibility(ListView.VISIBLE);
+		
+		
+		
+	    
 		tasksListView.setOnItemClickListener(onListClick);
 	}
 

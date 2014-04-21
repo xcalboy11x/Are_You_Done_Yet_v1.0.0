@@ -5,15 +5,18 @@ package com.techbearcave.AYDY;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.Notification.Builder;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -195,12 +198,51 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 
 	
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setMessage(R.string.confirmMsg);
+    	builder.setTitle("Confirm Delete");
+    	builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {				
+				
+				// Implement delete code here
+				Cursor c = helper.getAlertByTaskId(taskId,userId);
+				c.moveToFirst();
+				helper.deleteAlert(taskId);
+				
+				c = helper.getTaskByTaskId(taskId, userId);
+				c.moveToFirst();
+				helper.deleteTask(taskId);
+				c.close();
+				
+				finish();
+			}
+		} );
+    	
+    	builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+				finish();
+			}
+		});
+    	
+    	builder.create().show();
+    	return true;
+	}
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
 		getMenuInflater().inflate(R.menu.delete_task_from_menu, menu);
 		return true;
       
 	}
+	
 
 	//when the data is selected per spinner do this:
 	@Override

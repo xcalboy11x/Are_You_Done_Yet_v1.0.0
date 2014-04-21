@@ -29,9 +29,6 @@ public class ListTasksActivity extends Activity {
 	private SQLiteHelper helper;
 	private TaskAdapter adapter;
 	private String userId;
-	//public static String ID_EXTRA = "";
-	//public static String ID_EDIT = "";
-	//public static String ID_TASK = "";
 	public static String isInEditMode;
 	
 	
@@ -47,10 +44,13 @@ public class ListTasksActivity extends Activity {
 		System.out.println("Here is the note position in the listview: " + test);
 		String taskId = String.valueOf(test);
 
-		Cursor c = helper.getTaskByTaskId(taskId, userId);
+		Cursor c = helper.getAlertByTaskId(taskId,userId);
+		c.moveToFirst();
+		helper.deleteAlert(taskId);
+		
+		c = helper.getTaskByTaskId(taskId, userId);
 		c.moveToFirst();
 		helper.deleteTask(taskId);
-
 		c.close();
 
 		tasksListView.setAdapter(adapter);

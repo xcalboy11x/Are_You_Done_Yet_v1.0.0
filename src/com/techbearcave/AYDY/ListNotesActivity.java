@@ -28,9 +28,6 @@ public class ListNotesActivity extends Activity {
 	private SQLiteHelper helper;
 	private NoteAdapter adapter;
 	private String userId;
-	//public static String ID_EXTRA = "";
-	//public static String ID_EDIT = "";
-	//public static String ID_NOTE = "";
 	public static String isInEditMode;
 	private TextView noteName = null;
 

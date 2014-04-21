@@ -205,11 +205,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	}
 	
 	public void deleteTask (String taskId){
-
-		Log.d("Deleting Note Id: ", taskId + "");
-
-		Log.d("Deleting Task Id: ", taskId + "");
-
 		getWritableDatabase().delete(TABLE_TASK, "_id" + "='" + taskId+ "'", null);
 	}
 	
@@ -362,5 +357,9 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	
 	public String getAlertperiod (Cursor c) {
 		return (c.getString(3));
+	}
+	
+	public void deleteAlert (String taskId){
+		getWritableDatabase().delete(TABLE_ALERT, "Taskfk" + "='" + taskId+ "'", null);
 	}
 }

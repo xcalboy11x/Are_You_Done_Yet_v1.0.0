@@ -34,6 +34,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     private static final String NOTE_DESCRIPTION = "Notedescription";
     private static final String ALERT_HOUR = "Alerthour";
     private static final String ALERT_MINUTE = "Alertminute";    
+    private static final String ALERT_PERIOD = "Alertperiod";    
     private static final String TASK_HAS_ALERT = "Taskhasalert";
   
     
@@ -65,9 +66,9 @@ public class SQLiteHelper extends SQLiteOpenHelper{
  // Alerts table create statement
     private static final String CREATE_TABLE_ALERT = "CREATE TABLE " + TABLE_ALERT 
     		+ "(" + ALERT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
-    		+ ALERT_MINUTE + " INTEGER, "
     		+ ALERT_HOUR + " INTEGER, "
-            + KEY_CREATED_AT + " DATETIME, " 
+    		+ ALERT_MINUTE + " INTEGER, "
+    		+ ALERT_PERIOD + " TEXT, "
     		+ FOREIGN_KEY + " INTEGER, "
     		+ TASK_KEY + " INTEGER, "
     		+ "Dayfk INTEGER, Monthfk INTEGER, "
@@ -199,6 +200,10 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 				"WHERE Userfk ='" + id +"' AND Day ='"+ day +"' AND Month = '" + month + "'" , null));
 	}
 	
+	public Cursor getTaskIdByCreatedAt(String time, int id) {
+		return (getReadableDatabase().rawQuery("SELECT _id FROM tasks WHERE Userfk ='" + id +"' AND Created_at = '" + time + "'" , null));
+	}
+	
 	public void deleteTask (String taskId){
 
 		Log.d("Deleting Note Id: ", taskId + "");
@@ -306,11 +311,12 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 	 * ===============================================
 	*/
 	
-	public boolean insertAlert(String alertMinute, String alertHour, int userId, String taskId, String day, String month) {
+	public boolean insertAlert(String alertMinute, String alertHour, String alertPeriod, int userId, String taskId, String day, String month) {
 		ContentValues cv = new ContentValues();
 		
 		cv.put("Alertminute", alertMinute);
 		cv.put("Alerthour", alertHour);
+		cv.put("Alertperiod", alertPeriod);
 		cv.put("Userfk", userId);
 		cv.put("Taskfk", taskId);
 		cv.put("Dayfk", day);
@@ -325,14 +331,36 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 		return true;
 	}
 	
-	public void updateAlert(String alertMinute, String alertHour, String day, String month, int id){
+	public void updateAlert(String alertMinute, String alertHour, String alertPeriod, String day, String month, int id){
 		ContentValues cv = new ContentValues();
 		
 		cv.put("Alertminute", alertMinute);
 		cv.put("Alerthour", alertHour);
+		cv.put("Alertperiod", alertPeriod);
 		cv.put("Dayfk", day);
 		cv.put("Monthfk", month);
 		
 		getWritableDatabase().update("alerts", cv, "_id ='" + id + "'", null);
+	}
+	
+	public Cursor getAlertByTaskId(String taskId, String id) {
+		return (getReadableDatabase().rawQuery("SELECT _id, Alertminute, Alerthour, Alertperiod, Userfk, Taskfk FROM alerts " +
+				"WHERE Taskfk ='"+ taskId + "' AND Userfk = '" + id + "'", null));
+	}
+	
+	public String getAlertId (Cursor c) {
+		return (c.getString(0));
+	}
+	
+	public String getAlertminute (Cursor c) {
+		return (c.getString(1));
+	}
+	
+	public String getAlerthour (Cursor c) {
+		return (c.getString(2));
+	}
+	
+	public String getAlertperiod (Cursor c) {
+		return (c.getString(3));
 	}
 }

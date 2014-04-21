@@ -42,7 +42,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	private EditText taskTitleEditText;
 	private EditText taskEditText;
 	private TextView taskDateText;
-	private boolean checkAlertBox = false;
+	final int NOTIFY_ID = 1234;
 	private SQLiteHelper helper;
 	
 	private String userId;
@@ -148,6 +148,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 					helper.insertTask(taskTitleEditText.getText().toString(), taskEditText.getText().toString(), 
 							Calendar.getInstance().getTime().toString(), daySpinner.getSelectedItem().toString(),
 							Integer.toString(monthSpinner.getSelectedItemPosition() + 1), alertCheck, Integer.parseInt(userId));	
+					finish();
 					
 					if(alertBox.isChecked())
 					{
@@ -284,18 +285,18 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	
 	public void createNotification (){
 		
-		final int NOTIF_ID = 1234;
-		 
-		 NotificationManager notifManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		 NotificationManager notifyManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		 Notification task = new Notification(R.drawable.ic_launcher, "New Task!", System.currentTimeMillis());
+		 Intent intent = new Intent(this, ListTasksActivity.class);
 		 
-		 PendingIntent intent = PendingIntent.getActivity(this, 0, new Intent(this, ListTasksActivity.class), 0);
+		 PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		 
-		 task.setLatestEventInfo(this, "You have a new task to attend to", "Task - Finish the fucking project", intent);
+		 task.setLatestEventInfo(this, "You have a new task to attend to", "Task - Finish the fucking project", pIntent);
+		 task.defaults = Notification.DEFAULT_ALL;
 		 
-		 notifManager.notify(NOTIF_ID, task);
-		 //notifManager.cancel(NOTIF_ID);
-		
+		 notifyManager.notify(NOTIFY_ID, task);
+		// notifyManager.cancel(NOTIFY_ID);
+		 finish();
 
 	}
 }

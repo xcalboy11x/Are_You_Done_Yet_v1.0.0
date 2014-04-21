@@ -30,7 +30,7 @@ public class EditNoteActivity extends Activity {
 
 	public static final int RESULT_DELETE = -9000;
 	private boolean isInEditMode = true ; 
-	private boolean isAddingNote = true; 
+	private boolean isAddingNote = true;  
 	private String userId;
 	private String noteId;
 	private Button saveButton;

@@ -145,20 +145,24 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 				{
 					System.out.println("Add mode");
 					
+					String time = Calendar.getInstance().getTime().toString();
 					helper.insertTask(taskTitleEditText.getText().toString(), taskEditText.getText().toString(), 
-							Calendar.getInstance().getTime().toString(), daySpinner.getSelectedItem().toString(),
+							time, daySpinner.getSelectedItem().toString(),
 							Integer.toString(monthSpinner.getSelectedItemPosition() + 1), alertCheck, Integer.parseInt(userId));	
+					Cursor c = helper.getTaskIdByCreatedAt(time, Integer.parseInt(userId));
+					c.moveToFirst();
+					taskId = helper.getTaskId(c);
+					c.close();
 					finish();
 					
 					if(alertBox.isChecked())
 					{
-						helper.insertAlert(minuteSpinner.getSelectedItem().toString(), hourSpinner.getSelectedItem().toString(),
+						helper.insertAlert(minuteSpinner.getSelectedItem().toString(), hourSpinner.getSelectedItem().toString(), periodSpinner.getSelectedItem().toString(), 
 								Integer.parseInt(userId), taskId, daySpinner.getSelectedItem().toString(), monthSpinner.getSelectedItem().toString());
 								
-								createNotification();
+						createNotification();
 									
-									finish();
-								
+						finish();
 					}
 				
 				}
@@ -170,7 +174,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 							daySpinner.getSelectedItem().toString(), Integer.toString(monthSpinner.getSelectedItemPosition() + 1), 
 							alertCheck, Integer.parseInt(taskId));
 					if(alertBox.isChecked())
-						helper.updateAlert(minuteSpinner.getSelectedItem().toString(), hourSpinner.getSelectedItem().toString(), 
+						helper.updateAlert(minuteSpinner.getSelectedItem().toString(), hourSpinner.getSelectedItem().toString(), periodSpinner.getSelectedItem().toString(),
 								daySpinner.getSelectedItem().toString(), Integer.toString(monthSpinner.getSelectedItemPosition() + 1), 
 								Integer.parseInt(taskId));
 					finish();
@@ -268,10 +272,28 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		
 		if (Integer.parseInt(helper.getTaskHasAlert(c)) ==1)
 		{
+			System.out.println("inside taskHasAlert");
+			c = helper.getAlertByTaskId(taskId, userId);
+			c.moveToFirst();
+			
 			hourSpinner.setVisibility(View.VISIBLE);
 			minuteSpinner.setVisibility(View.VISIBLE);
 			periodSpinner.setVisibility(View.VISIBLE);
 			alertBox.setChecked(true);
+			
+			int hour = Integer.parseInt(helper.getAlerthour(c));
+			int minute = Integer.parseInt(helper.getAlertminute(c));
+			int period;
+			
+			if (helper.getAlertperiod(c).equals("AM"))
+				period = 0;
+			else
+				period = 1;
+			
+			hourSpinner.setSelection(hour-1);
+			minuteSpinner.setSelection(minute);
+			periodSpinner.setSelection(period);
+			
 		}
 		else {
 			hourSpinner.setVisibility(View.GONE);
@@ -279,8 +301,8 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 			periodSpinner.setVisibility(View.GONE);
 			alertBox.setChecked(false);
 		}
-		
 		c.close();
+		
 	}
 	
 	public void createNotification (){

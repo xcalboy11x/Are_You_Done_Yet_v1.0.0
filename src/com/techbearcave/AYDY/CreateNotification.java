@@ -50,6 +50,7 @@ public class CreateNotification extends BroadcastReceiver {
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, editIntent, 0);
 		
 		task.setLatestEventInfo(context, taskName, taskDescription, contentIntent);
-		nM.notify(1234, task);
+		task.defaults = Notification.DEFAULT_ALL;
+		nM.notify(Integer.parseInt(taskId), task);
 	}
 }

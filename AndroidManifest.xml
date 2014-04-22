@@ -64,6 +64,11 @@
             android:name="com.techbearcave.AYDY.NewAccount"
             android:label="@string/title_activity_new_account" >
         </activity>
+        
+        <receiver 
+            android:name="com.techbearcave.AYDY.CreateNotification">
+        </receiver>
+        
     </application>
 
 </manifest>

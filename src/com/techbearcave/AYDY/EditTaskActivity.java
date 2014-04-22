@@ -11,6 +11,7 @@ import android.app.Notification;
 import android.app.Notification.Builder;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -30,7 +31,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.techbearcave.notetaker.CreateNotification;
 import com.techbearcave.notetaker.R;
 
 
@@ -158,7 +158,6 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 					c.moveToFirst();
 					taskId = helper.getTaskId(c);
 					c.close();
-					finish();
 					
 					if(alertBox.isChecked())
 					{
@@ -168,40 +167,50 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 						String month = monthSpinner.getSelectedItem().toString();
 						int monthToPass = 0;
 						int day = Integer.parseInt(daySpinner.getSelectedItem().toString());
+						
 						int hour = Integer.parseInt(hourSpinner.getSelectedItem().toString());
+						if (periodSpinner.getSelectedItem().toString().equals("PM")) {
+							hour = hour + 12;
+							if (hourSpinner.getSelectedItem().toString().equals("12"))
+								hour = 12;
+							System.out.println("PM selected hour: "+ hour);
+						}
+						if ((periodSpinner.getSelectedItem().toString().equals("AM")) && (hourSpinner.getSelectedItem().toString().equals("12"))) {
+							hour = 0;
+							System.out.println("AM selected 12: "+ hour);
+						}
 						int minute = Integer.parseInt(minuteSpinner.getSelectedItem().toString());
 						int year = 2014; // will fix this later
 						
 						if(month.equals("January"))
-							monthToPass = 1;
+							monthToPass = 0;
 						else if(month.equals("February"))
-							monthToPass = 2;
+							monthToPass = 1;
 						else if(month.equals("March"))
-							monthToPass = 3;
+							monthToPass = 2;
 						else if(month.equals("April"))
-							monthToPass = 4;
+							monthToPass = 3;
 						else if(month.equals("May"))
-							monthToPass = 5;
+							monthToPass = 4;
 						else if(month.equals("June"))
-							monthToPass = 6;
+							monthToPass = 5;
 						else if(month.equals("July"))
-							monthToPass = 7;
+							monthToPass = 6;
 						else if(month.equals("August"))
-							monthToPass = 8;
+							monthToPass = 7;
 						else if(month.equals("September"))
-							monthToPass = 9;
+							monthToPass = 8;
 						else if(month.equals("October"))
-							monthToPass = 10;
+							monthToPass = 9;
 						else if(month.equals("November"))
-							monthToPass = 11;
+							monthToPass = 10;
 						else if(month.equals("December"))
-							monthToPass = 12;
+							monthToPass = 11;
 						
 						startAlarm(year, monthToPass, day, hour, minute);
-									
-						finish();
 					}
-				
+					
+				finish();
 				}
 				else
 				{
@@ -383,22 +392,27 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	
 	public void startAlarm(int year, int monthToPass, int day, int hour, int minute){
 		
-		 System.out.println("Starting Alarm");
-		 
-		 AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
-		 Calendar calendar =  Calendar.getInstance();
-		 
-			
-		    calendar.set(year, monthToPass, day, hour, minute );
-		    System.out.println("Calendar set the following year, month, day, hour, minute: " + year + " " + monthToPass + " " + day + " " + hour + " " + minute);
-		    long when = calendar.getTimeInMillis();         // notification time
-		    System.out.println("The value of when = " + when);
-		    Intent intent = new Intent(this, CreateNotification.class);
-		    PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
-		    alarmManager.set(AlarmManager.RTC, when, pendingIntent);
-		    System.out.println("Finishing Alarm");
+		System.out.println("Starting Alarm");
+
+		AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+		Calendar calendar =  Calendar.getInstance();
+
+
+		calendar.set(year, monthToPass, day, hour, minute );
+		System.out.println("Calendar set the following year, month, day, hour, minute: " + year + " " + monthToPass + " " + day + " " + hour + " " + minute);
+		long when = calendar.getTimeInMillis();         // notification time
+		System.out.println("The value of when = " + when);
+		
+		Intent intent = new Intent(this, CreateNotification.class);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("USERID", userId);
+		bundle.putSerializable("TASKID", taskId);
+		intent.putExtras(bundle);
+		intent.setAction("com.techbearcave.AYDY.Action");
+		
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+		alarmManager.set(AlarmManager.RTC, when, pendingIntent);
+		System.out.println("Finishing Alarm");
 	}
-	
-	
 	
 }

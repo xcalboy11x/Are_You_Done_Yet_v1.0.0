@@ -56,7 +56,7 @@ public class ListTasksActivity extends Activity {
 		tasksListView.setAdapter(adapter);
 		adapter.notifyDataSetChanged(); //this is suppose to notify adapter of changes and redraw listview
 
-
+		
 		// 1. Find the position in ListView
 		// 2. Find NoteID in Listview
 		// 3. Send delete Query to database
@@ -122,6 +122,7 @@ public class ListTasksActivity extends Activity {
 		
 		
 		tasksListView.setAdapter(adapter);
+
 		adapter.notifyDataSetChanged();
 		Log.i("Listview", "Adapter was just set");
 		//tasksListView.setVisibility(ListView.INVISIBLE);
@@ -130,6 +131,7 @@ public class ListTasksActivity extends Activity {
 		
 		
 	    
+
 		tasksListView.setOnItemClickListener(onListClick);
 	}
 
@@ -191,4 +193,8 @@ public class ListTasksActivity extends Activity {
 			taskName.setText(helper.getNotename(c));
 		}
 	}
+
+	
+	
+	
 }

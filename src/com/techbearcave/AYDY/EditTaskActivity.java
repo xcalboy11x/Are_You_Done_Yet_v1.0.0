@@ -5,6 +5,7 @@ package com.techbearcave.AYDY;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.Notification.Builder;
@@ -29,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.techbearcave.notetaker.CreateNotification;
 import com.techbearcave.notetaker.R;
 
 
@@ -45,7 +47,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	private EditText taskTitleEditText;
 	private EditText taskEditText;
 	private TextView taskDateText;
-	final int NOTIFY_ID = 1234;
+	
 	private SQLiteHelper helper;
 	
 	private String userId;
@@ -163,7 +165,39 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 						helper.insertAlert(minuteSpinner.getSelectedItem().toString(), hourSpinner.getSelectedItem().toString(), periodSpinner.getSelectedItem().toString(), 
 								Integer.parseInt(userId), taskId, daySpinner.getSelectedItem().toString(), monthSpinner.getSelectedItem().toString());
 								
-						createNotification();
+						String month = monthSpinner.getSelectedItem().toString();
+						int monthToPass = 0;
+						int day = Integer.parseInt(daySpinner.getSelectedItem().toString());
+						int hour = Integer.parseInt(hourSpinner.getSelectedItem().toString());
+						int minute = Integer.parseInt(minuteSpinner.getSelectedItem().toString());
+						int year = 2014; // will fix this later
+						
+						if(month.equals("January"))
+							monthToPass = 1;
+						else if(month.equals("February"))
+							monthToPass = 2;
+						else if(month.equals("March"))
+							monthToPass = 3;
+						else if(month.equals("April"))
+							monthToPass = 4;
+						else if(month.equals("May"))
+							monthToPass = 5;
+						else if(month.equals("June"))
+							monthToPass = 6;
+						else if(month.equals("July"))
+							monthToPass = 7;
+						else if(month.equals("August"))
+							monthToPass = 8;
+						else if(month.equals("September"))
+							monthToPass = 9;
+						else if(month.equals("October"))
+							monthToPass = 10;
+						else if(month.equals("November"))
+							monthToPass = 11;
+						else if(month.equals("December"))
+							monthToPass = 12;
+						
+						startAlarm(year, monthToPass, day, hour, minute);
 									
 						finish();
 					}
@@ -201,7 +235,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setMessage(R.string.confirmMsg);
+    	builder.setMessage(R.string.confirmMsgTask);
     	builder.setTitle("Confirm Delete");
     	builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 			
@@ -347,20 +381,24 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		
 	}
 	
-	public void createNotification (){
+	public void startAlarm(int year, int monthToPass, int day, int hour, int minute){
 		
-		 NotificationManager notifyManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		 Notification task = new Notification(R.drawable.ic_launcher, "New Task!", System.currentTimeMillis());
-		 Intent intent = new Intent(this, ListTasksActivity.class);
+		 System.out.println("Starting Alarm");
 		 
-		 PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+		 AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
+		 Calendar calendar =  Calendar.getInstance();
 		 
-		 task.setLatestEventInfo(this, "You have a new task to attend to", "Task - Finish the fucking project", pIntent);
-		 task.defaults = Notification.DEFAULT_ALL;
-		 
-		 notifyManager.notify(NOTIFY_ID, task);
-		// notifyManager.cancel(NOTIFY_ID);
-		 finish();
-
+			
+		    calendar.set(year, monthToPass, day, hour, minute );
+		    System.out.println("Calendar set the following year, month, day, hour, minute: " + year + " " + monthToPass + " " + day + " " + hour + " " + minute);
+		    long when = calendar.getTimeInMillis();         // notification time
+		    System.out.println("The value of when = " + when);
+		    Intent intent = new Intent(this, CreateNotification.class);
+		    PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
+		    alarmManager.set(AlarmManager.RTC, when, pendingIntent);
+		    System.out.println("Finishing Alarm");
 	}
+	
+	
+	
 }

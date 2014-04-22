@@ -25,6 +25,7 @@ public class CreateNotification extends BroadcastReceiver {
 		
 		helper = new SQLiteHelper(context);
 		Bundle bundle = intent.getExtras();
+		Bundle extras = new Bundle();
 		
 		userId = (String)bundle.getSerializable("USERID");
 		taskId= (String)bundle.getSerializable("TASKID");
@@ -40,7 +41,14 @@ public class CreateNotification extends BroadcastReceiver {
 		nM = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
 		
 		Notification task = new Notification(R.drawable.ic_launcher, "Task due!", System.currentTimeMillis());
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, EditTaskActivity.class), 0);
+		
+		Intent editIntent = new Intent(context, EditTaskActivity.class);
+		extras.putSerializable("useID", userId);
+		extras.putSerializable("tasID", taskId);
+		extras.putSerializable("notifBoolean", 1);
+		editIntent.putExtras(extras);
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, editIntent, 0);
+		
 		task.setLatestEventInfo(context, taskName, taskDescription, contentIntent);
 		nM.notify(1234, task);
 	}

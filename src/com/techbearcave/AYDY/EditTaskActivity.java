@@ -52,7 +52,7 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	
 	private String userId;
 	private String taskId;
-	private boolean isInEditMode = true ; 
+	private boolean isInEditMode = false ; 
 	ArrayAdapter monthAdapter;
 	ArrayAdapter dayAdapter;
 	ArrayAdapter hourAdapter;
@@ -110,10 +110,19 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 		periodSpinner.setVisibility(View.GONE);
 
 
-		if (isInEditMode)
+		if ((isInEditMode)&&!(bundle.containsKey("notifBoolean")))
 		{
 			taskId = (String) bundle.getSerializable ("positionTracker");
 			System.out.println("taskID: "+ taskId);
+			load();
+		}
+		
+		if (bundle.containsKey("notifBoolean"))
+		{
+			taskId = (String) bundle.getSerializable("tasID");
+			userId = (String) bundle.getSerializable("useID");
+			System.out.println("taskID: "+ taskId);
+			System.out.println("userID: "+ userId);
 			load();
 		}
 		
@@ -340,8 +349,6 @@ public class EditTaskActivity extends Activity implements OnItemSelectedListener
 	}
 	
 	private void load() {
-    	Bundle bundle = this.getIntent().getExtras();
-		taskId = (String) bundle.getSerializable("positionTracker");
 		Cursor c = helper.getTaskByTaskId(taskId, userId);
 		
 		System.out.println("Edit mode");
